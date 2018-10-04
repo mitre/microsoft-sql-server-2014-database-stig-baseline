@@ -200,5 +200,42 @@ GO
 ALTER AUTHORIZATION ON DATABASE::<DB name> TO <new owner name>;
 GO
 Verify that this produced the intended result by re-running the Check query."
+
+
+
+  query= %Q(
+    WITH FixedServerRoles(RoleName) AS
+    (
+          SELECT 'sysadmin'
+          UNION SELECT 'securityadmin'
+          UNION SELECT 'serveradmin'
+          UNION SELECT 'setupadmin'
+          UNION SELECT 'processadmin'
+          UNION SELECT 'diskadmin'
+          UNION SELECT 'dbcreator'
+          UNION SELECT 'bulkadmin'
+    )
+    SELECT
+          DB_NAME(database_id) AS [Database],
+          SUSER_SNAME(D.owner_sid) AS [Database Owner],
+          F.RoleName AS [Fixed Server Role],
+          CASE WHEN D.is_trustworthy_on = 1 THEN 'ON' ELSE 'off' END
+                AS [Trustworthy]
+    FROM
+          FixedServerRoles F
+          INNER JOIN sys.databases D ON D.Name = DB_NAME(database_id)
+    WHERE
+          IS_SRVROLEMEMBER(F.RoleName, SUSER_SNAME(D.owner_sid)) = 1
+    AND   DB_NAME(database_id) <> 'msdb'
+    AND   D.is_trustworthy_on = 1;
+    GO
+  )
+
+  sql = mssql_session(port:49371) unless !sql.nil?
+
+  describe "Non Compliant Database list" do
+    subject { sql.query(query).column('database') }
+    it { should be_empty }
+  end
 end
 

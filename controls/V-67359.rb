@@ -201,5 +201,64 @@ trace; edit it as necessary to capture any additional, locally-defined events.
 
 The script provided in the supplemental file Audit.sql can be used to create an
 audit; edit it as necessary to capture any additional, locally-defined events."
+
+
+
+  REQUIRED_AUDITS_ACTIONS =
+  [
+    "APPLICATION_ROLE_CHANGE_PASSWORD_GROUP",
+    "AUDIT_CHANGE_GROUP",
+    "BACKUP_RESTORE_GROUP",
+    "DATABASE_CHANGE_GROUP",
+    "DATABASE_OBJECT_ACCESS_GROUP",
+    "DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP",
+    "DATABASE_OBJECT_PERMISSION_CHANGE_GROUP",
+    "DATABASE_OPERATION_GROUP",
+    "DATABASE_OWNERSHIP_CHANGE_GROUP",
+    "DATABASE_PERMISSION_CHANGE_GROUP",
+    "DATABASE_PRINCIPAL_CHANGE_GROUP",
+    "DATABASE_PRINCIPAL_IMPERSONATION_GROUP",
+    "DATABASE_ROLE_MEMBER_CHANGE_GROUP",
+    "DBCC_GROUP",
+    "FAILED_LOGIN_GROUP",
+    "LOGIN_CHANGE_PASSWORD_GROUP",
+    "LOGOUT_GROUP",
+    "SCHEMA_OBJECT_ACCESS_GROUP",
+    "SCHEMA_OBJECT_CHANGE_GROUP",
+    "SCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP",
+    "SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP",
+    "SERVER_OBJECT_CHANGE_GROUP",
+    "SERVER_OBJECT_OWNERSHIP_CHANGE_GROUP",
+    "SERVER_OBJECT_PERMISSION_CHANGE_GROUP",
+    "SERVER_OPERATION_GROUP",
+    "SERVER_PERMISSION_CHANGE_GROUP",
+    "SERVER_PRINCIPAL_CHANGE_GROUP",
+    "SERVER_PRINCIPAL_IMPERSONATION_GROUP",
+    "SERVER_ROLE_MEMBER_CHANGE_GROUP",
+    "SERVER_STATE_CHANGE_GROUP",
+    "SUCCESSFUL_LOGIN_GROUP",
+    "TRACE_CHANGE_GROUP",
+  ]
+
+  query= %Q(
+    SELECT 
+          audit_action_name, audited_result
+    FROM 
+          master.sys.server_audit_specification_details
+  )
+
+  sql = mssql_session(port:49789) unless !sql.nil?
+
+  FOUND_ACTIONS = sql.query(query).column('audit_action_name') 
+
+  describe "Audited Result for Defined Audit Actions" do
+    subject { sql.query(query).column('audited_result').uniq }
+    it { should cmp "SUCCESS AND FAILURE" }
+  end
+
+  describe "Defined Audit Actions" do
+    subject { REQUIRED_AUDITS_ACTIONS }
+    it { should be_in FOUND_ACTIONS }
+  end
 end
 

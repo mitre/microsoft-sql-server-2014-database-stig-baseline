@@ -56,5 +56,8 @@ labeling is not implemented or does not reliably maintain labels on information
 in storage, this is a finding."
   tag "fix": "Develop SQL or application code or acquire a third party tool to
 perform data labeling."
+
+  only_if { false }
+
 end
 

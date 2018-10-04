@@ -71,6 +71,27 @@ information useful for identifying the host system or database structure, this
 is a finding."
   tag "fix": "Configure DBMS settings, custom database code, and associated
 application code not to divulge sensitive information or information useful for
-system identification in error messages that are displayed to general users."
+system identification in error messages that are displayed to general users.
+
+Consider enabling trace flag 3625 to mask certain system-level error information
+returned to non-administrative users.
+
+Launch SQL Server Configuration Manager >> Click SQL Services >> Open the 
+instance properties >> Click the Service Parameters tab >> Enter '-T3625' >> 
+Click Add >> Click OK >> Restart SQL instance."
+
+  query=%Q(
+    DBCC 
+      TRACESTATUS (3625, -1)
+    GO  
+    )
+
+  sql = mssql_session(port:49789) unless !sql.nil?
+
+  describe "TRACEFLAG 3625" do
+    subject { sql.query( query ).rows[0] }
+    its('status') { should cmp 1 }
+    its('global') { should cmp 1 }
+  end
 end
 

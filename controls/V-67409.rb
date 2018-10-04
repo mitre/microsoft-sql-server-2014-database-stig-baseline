@@ -64,7 +64,33 @@ definitions and contents of the relevant tables and columns.
 
 If any of the information defined as requiring cryptographic protection is not
 encrypted in a manner that provides the required level of protection, this is a
-finding."
+finding.
+
+SELECT
+DB_NAME(database_id) AS [Database Name], CASE encryption_state WHEN 0 THEN 
+'No database encryption key present, no encryption' 
+WHEN 1 THEN 'Unencrypted' 
+WHEN 2 THEN 'Encryption in progress' 
+WHEN 3 THEN 'Encrypted' 
+WHEN 4 THEN 'Key change in progress' 
+WHEN 5 THEN 'Decryption in progress' 
+WHEN 6 THEN 'Protection change in progress' 
+END AS [Encryption State]
+FROM sys.dm_database_encryption_keys
+
+For each user database for which encryption is called for and it is marked 
+Unencrypted, this is a finding. 
+
+If table/column encryption and/or a separation between those who own the data 
+(and can view it) and those who manage the data (but should have no access) is 
+required for PII or similar types of data, use Always Encrypted. The details 
+for configuring Always Encrypted are located here: 
+https://msdn.microsoft.com/en-us/library/mt163865.aspx.
+
+Review the definitions and contents of the relevant tables/columns for the 
+Always Encryption settings, if any of the information defined as requiring 
+cryptographic protection is not encrypted this is a finding.
+"
   tag "fix": "Where full-disk encryption is required, configure Windows and/or
 the storage system to provide this.
 
@@ -77,5 +103,31 @@ Where column encryption is required, deploy the necessary stack of certificates
 and keys, and enable encryption on the columns in question.  For guidance from
 the Microsoft Developer Network on how to do this, perform a web search for
 \"SQL Server 2014 Encrypt a Column of Data\"."
+
+  query=%Q(
+    SELECT
+      DB_NAME(database_id) AS [Database Name], 
+        CASE encryption_state 
+            WHEN 0 THEN 'No database encryption key present, no encryption' 
+            WHEN 1 THEN 'Unencrypted' 
+            WHEN 2 THEN 'Encryption in progress' 
+            WHEN 3 THEN 'Encrypted' 
+            WHEN 4 THEN 'Key change in progress' 
+            WHEN 5 THEN 'Decryption in progress' 
+            WHEN 6 THEN 'Protection change in progress' 
+            END AS [Encryption State]
+    FROM 
+      sys.dm_database_encryption_keys
+    )
+
+  sql = mssql_session(port:49789) unless !sql.nil?
+
+  describe "TRACEFLAG 3625" do
+    subject { sql.query( query ).rows[0] }
+    its('status') { should cmp 1 }
+    its('global') { should cmp 1 }
+  end
+
+
 end
 

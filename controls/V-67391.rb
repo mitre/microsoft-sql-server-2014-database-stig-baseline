@@ -69,5 +69,7 @@ input.
 
 Modify SQL Server to properly use the correct column data types as required in
 the database."
+
+  only_if { false }
 end
 

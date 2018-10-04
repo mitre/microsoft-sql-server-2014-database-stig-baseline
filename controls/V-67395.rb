@@ -90,5 +90,7 @@ If dynamic code execution is employed without protective measures against code
 injection, this is a finding."
   tag "fix": "Where dynamic code execution is used, modify the code to
 implement protections against code injection."
+
+  only_if { false }
 end
 

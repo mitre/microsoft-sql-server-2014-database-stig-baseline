@@ -33,5 +33,19 @@ store Database Master Key passwords.
 From the query prompt:
 EXEC SP_CONTROL_DBMASTERKEY_PASSWORD @db_name = '<database name>', @action
 = N'drop'"
+
+  query=%Q(
+    SELECT 
+          COUNT(credential_id) AS count_of_ids
+    FROM 
+          [master].sys.master_key_passwords
+  )
+
+  sql = mssql_session(port:49371) unless !sql.nil?
+
+  describe "Count Database Master Key passwords stored in credentials within the database" do
+    subject { sql.query(query).row(0).column('count_of_ids') }
+    its('value') { should cmp 0 }
+  end
 end
 

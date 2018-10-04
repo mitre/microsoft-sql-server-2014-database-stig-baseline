@@ -50,5 +50,7 @@ If it does not implement the documented behavior, this is a finding."
   tag "fix": "Revise and deploy the source code for database program objects
 (stored procedures, functions, triggers) and application source code, to
 implement the documented behavior."
+
+  only_if { false }
 end
 

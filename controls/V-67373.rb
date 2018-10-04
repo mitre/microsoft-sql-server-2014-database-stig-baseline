@@ -88,5 +88,28 @@ USE [master];
 GO
 ALTER DATABASE <name> SET TRUSTWORTHY OFF;
 GO"
+
+  query=%Q(
+    SELECT
+          DB_NAME(D.database_id) AS [Database],
+          SUSER_SNAME(D.owner_sid) AS [Database Owner],
+          CASE WHEN D.is_trustworthy_on = 1 THEN 'ON' ELSE 'off' END
+          AS [Trustworthy]
+    FROM
+          sys.databases D
+    WHERE
+          D.[name] = DB_NAME(D.database_id)
+          AND DB_NAME(D.database_id) <> 'msdb'
+          AND D.is_trustworthy_on = 1;
+    GO
+  )
+
+  sql = mssql_session(port:49371) unless !sql.nil?
+
+  describe "Non Compliant Database list" do
+    subject { sql.query(query).column('database') }
+    it { should be_empty }
+  end
+
 end
 

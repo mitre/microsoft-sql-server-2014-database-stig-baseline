@@ -56,5 +56,7 @@ parameters, this is a finding."
   tag "fix": "Where dynamic code execution is employed in circumstances where
 the objective could practically be satisfied by static execution with strongly
 typed parameters, modify the code to do so."
+
+    only_if { false }
 end
 
