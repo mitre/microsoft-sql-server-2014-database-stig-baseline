@@ -89,7 +89,7 @@ GO
 ALTER DATABASE <name> SET TRUSTWORTHY OFF;
 GO"
 
-  query=%Q(
+  query = %(
     SELECT
           DB_NAME(D.database_id) AS [Database],
           SUSER_SNAME(D.owner_sid) AS [Database Owner],
@@ -104,12 +104,10 @@ GO"
     GO
   )
 
-  sql = mssql_session(port:49371) unless !sql.nil?
+  sql = mssql_session(port: 49371) if sql.nil?
 
   describe "Non Compliant Database list" do
     subject { sql.query(query).column('database') }
     it { should be_empty }
   end
-
 end
-

@@ -124,5 +124,73 @@ GO
 ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
 = ON);
 GO"
+  query_traces = %(
+    SELECT * FROM sys.traces
+  )
+  query_trace_eventinfo = %(
+    SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
+  )
+
+  server_audit_specification_name = 'blah2_spec'
+
+  query_audits = %(
+    SELECT audit_action_name,
+           audited_result
+    FROM   sys.server_audit_specification_details
+    WHERE  server_specification_id =
+           (SELECT server_specification_id
+            FROM   sys.server_audit_specifications
+            WHERE  [name] = '#{server_audit_specification_name}')
+           AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
+  )
+
+  server_trace = false
+  server_audit = true
+
+  sql_session = mssql_session(port: 49789) if sql_session.nil?
+
+  describe.one do
+    describe 'SQL Server Trace is in use for audit purposes' do
+      subject { server_trace }
+      it { should be true }
+    end
+
+    describe 'SQL Server Audit is in use for audit purposes' do
+      subject { server_audit }
+      it { should be true }
+    end
+  end
+
+  if server_trace
+    describe 'List defined traces for the SQL server instance' do
+      subject { sql_session.query(query_traces) }
+      it { should_not be_empty }
+    end
+
+    trace_ids = sql_session.query(query_traces).column('id')
+    describe.one do
+      trace_ids.each do |trace_id|
+        found_events = sql_session.query(format(query_trace_eventinfo, trace_id: trace_id)).column('eventid')
+        describe "EventsIDs in Trace ID:#{trace_id}" do
+          subject { found_events }
+          it { should include '162' }
+        end
+      end
+    end
+  end
+
+  if server_audit
+    describe 'SQL Server Audit:' do
+      describe 'Defined Audits with Audit Action SCHEMA_OBJECT_ACCESS_GROUP' do
+        subject { sql_session.query(query_audits) }
+        it { should_not be_empty }
+      end
+      describe 'Audited Result for Defined Audit Actions' do
+        subject { sql_session.query(query_audits).column('audited_result').uniq.to_s }
+        it { should match %r(SUCCESS AND FAILURE|FAILURE) }
+      end
+    end
+  end
 end
+
 

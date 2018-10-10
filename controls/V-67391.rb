@@ -70,6 +70,8 @@ input.
 Modify SQL Server to properly use the correct column data types as required in
 the database."
 
-  only_if { false }
+  describe 'This test currently has no automated tests, you must check manually' do
+    skip 'This check must be preformed manually'
+  end
 end
 

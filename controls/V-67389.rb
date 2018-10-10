@@ -50,7 +50,7 @@ Modify any code used for moving data from production to development/test
 systems to ensure copies of production data are not left in unsecured
 locations."
 
-  only_if { false }
-
+  describe 'This test currently has no automated tests, you must check manually' do
+    skip 'This check must be preformed manually'
+  end
 end
-

@@ -30,7 +30,12 @@ organization accepts responsibility for its support.  Other implementations may
 also exist. Custom application code is also a viable way to implement a
 solution.
   "
-  impact 0.7
+
+  if security_labeling_required
+    impact 0.7
+  else
+    impact 0.0
+  end
   tag "gtitle": "SRG-APP-000314-DB-000310"
   tag "gid": "V-67405"
   tag "rid": "SV-81895r2_rule"
@@ -56,7 +61,7 @@ in transmission, this is a finding."
   tag "fix": "Develop SQL or application code or acquire a third party tool to
 perform data labeling."
 
-  only_if { false }
-
+  describe 'This test currently has no automated tests, you must check manually' do
+    skip 'This check must be preformed manually'
+  end
 end
-

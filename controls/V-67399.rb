@@ -74,16 +74,16 @@ Launch SQL Server Configuration Manager >> Click SQL Services >> Open the
 instance properties >> Click the Service Parameters tab >> Enter '-T3625' >> 
 Click Add >> Click OK >> Restart SQL instance."
 
-  query=%Q(
-    DBCC 
+  query = %(
+    DBCC
       TRACESTATUS (3625, -1)
-    GO  
+    GO
     )
 
-  sql = mssql_session(port:49789) unless !sql.nil?
+  sql = mssql_session(port: 49789) if sql.nil?
 
-  describe "TRACEFLAG 3625" do
-    subject { sql.query( query ).rows[0] }
+  describe 'TRACEFLAG 3625' do
+    subject { sql.query(query).rows[0] }
     its('status') { should cmp 1 }
     its('global') { should cmp 1 }
   end

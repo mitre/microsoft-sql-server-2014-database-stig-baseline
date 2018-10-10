@@ -76,5 +76,8 @@ Correct any issues that have been causing backups to fail.
 
 Test the restoration of the database at least once a year; correct any issues
 that cause it to fail.  Maintain a record of these tests."
-end
 
+  describe 'This test currently has no automated tests, you must check manually' do
+    skip 'This check must be preformed manually'
+  end
+end

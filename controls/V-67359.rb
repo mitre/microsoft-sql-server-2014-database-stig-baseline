@@ -1,4 +1,4 @@
-control "V-67359" do
+control 'V-67359' do
   title "SQL Server must generate Trace or Audit records for
 organization-defined auditable events."
   desc  "Audit records can be generated from various components within the
@@ -192,7 +192,8 @@ SERVER_PRINCIPAL_IMPERSONATION_GROUP
 SERVER_ROLE_MEMBER_CHANGE_GROUP
 SERVER_STATE_CHANGE_GROUP
 SUCCESSFUL_LOGIN_GROUP
-TRACE_CHANGE_GROUP"
+TRACE_CHANGE_GROUP
+"
   tag "fix": "Design and deploy a SQL Server Audit or Trace that captures all
 auditable events.
 
@@ -202,63 +203,114 @@ trace; edit it as necessary to capture any additional, locally-defined events.
 The script provided in the supplemental file Audit.sql can be used to create an
 audit; edit it as necessary to capture any additional, locally-defined events."
 
+  REQUIRED_EVENT_ID = %w[
+    14 15 16 17 18 20 42 43 46 47 90 102 103 104 105 106 107
+    108 109 110 111 112 113 115 116 117 118 128 129 130 131 132
+    133 134 135 152 153 162 164 170 171 172 173 175 176 177 178
+    180
+  ].freeze
 
+  REQUIRED_AUDITS_ACTIONS = %w[
+    APPLICATION_ROLE_CHANGE_PASSWORD_GROUP
+    AUDIT_CHANGE_GROUP
+    BACKUP_RESTORE_GROUP
+    DATABASE_CHANGE_GROUP
+    DATABASE_OBJECT_ACCESS_GROUP
+    DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP
+    DATABASE_OBJECT_PERMISSION_CHANGE_GROUP
+    DATABASE_OPERATION_GROUP
+    DATABASE_OWNERSHIP_CHANGE_GROUP
+    DATABASE_PERMISSION_CHANGE_GROUP
+    DATABASE_PRINCIPAL_CHANGE_GROUP
+    DATABASE_PRINCIPAL_IMPERSONATION_GROUP
+    DATABASE_ROLE_MEMBER_CHANGE_GROUP
+    DBCC_GROUP
+    FAILED_LOGIN_GROUP
+    LOGIN_CHANGE_PASSWORD_GROUP
+    LOGOUT_GROUP
+    SCHEMA_OBJECT_ACCESS_GROUP
+    SCHEMA_OBJECT_CHANGE_GROUP
+    SCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP
+    SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP
+    SERVER_OBJECT_CHANGE_GROUP
+    SERVER_OBJECT_OWNERSHIP_CHANGE_GROUP
+    SERVER_OBJECT_PERMISSION_CHANGE_GROUP
+    SERVER_OPERATION_GROUP
+    SERVER_PERMISSION_CHANGE_GROUP
+    SERVER_PRINCIPAL_CHANGE_GROUP
+    SERVER_PRINCIPAL_IMPERSONATION_GROUP
+    SERVER_ROLE_MEMBER_CHANGE_GROUP
+    SERVER_STATE_CHANGE_GROUP
+    SUCCESSFUL_LOGIN_GROUP
+    TRACE_CHANGE_GROUP
+  ].freeze
 
-  REQUIRED_AUDITS_ACTIONS =
-  [
-    "APPLICATION_ROLE_CHANGE_PASSWORD_GROUP",
-    "AUDIT_CHANGE_GROUP",
-    "BACKUP_RESTORE_GROUP",
-    "DATABASE_CHANGE_GROUP",
-    "DATABASE_OBJECT_ACCESS_GROUP",
-    "DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP",
-    "DATABASE_OBJECT_PERMISSION_CHANGE_GROUP",
-    "DATABASE_OPERATION_GROUP",
-    "DATABASE_OWNERSHIP_CHANGE_GROUP",
-    "DATABASE_PERMISSION_CHANGE_GROUP",
-    "DATABASE_PRINCIPAL_CHANGE_GROUP",
-    "DATABASE_PRINCIPAL_IMPERSONATION_GROUP",
-    "DATABASE_ROLE_MEMBER_CHANGE_GROUP",
-    "DBCC_GROUP",
-    "FAILED_LOGIN_GROUP",
-    "LOGIN_CHANGE_PASSWORD_GROUP",
-    "LOGOUT_GROUP",
-    "SCHEMA_OBJECT_ACCESS_GROUP",
-    "SCHEMA_OBJECT_CHANGE_GROUP",
-    "SCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP",
-    "SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP",
-    "SERVER_OBJECT_CHANGE_GROUP",
-    "SERVER_OBJECT_OWNERSHIP_CHANGE_GROUP",
-    "SERVER_OBJECT_PERMISSION_CHANGE_GROUP",
-    "SERVER_OPERATION_GROUP",
-    "SERVER_PERMISSION_CHANGE_GROUP",
-    "SERVER_PRINCIPAL_CHANGE_GROUP",
-    "SERVER_PRINCIPAL_IMPERSONATION_GROUP",
-    "SERVER_ROLE_MEMBER_CHANGE_GROUP",
-    "SERVER_STATE_CHANGE_GROUP",
-    "SUCCESSFUL_LOGIN_GROUP",
-    "TRACE_CHANGE_GROUP",
-  ]
-
-  query= %Q(
-    SELECT 
-          audit_action_name, audited_result
-    FROM 
-          master.sys.server_audit_specification_details
+  query_traces = %(
+    SELECT * FROM sys.traces
+  )
+  query_trace_eventinfo = %(
+    SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
   )
 
-  sql = mssql_session(port:49789) unless !sql.nil?
+  server_audit_specification_name = 'blah2_spec'
 
-  FOUND_ACTIONS = sql.query(query).column('audit_action_name') 
+  query_audits = %(
+    SELECT audit_action_name,
+           audited_result
+    FROM   sys.server_audit_specification_details
+    WHERE  server_specification_id = (SELECT DISTINCT( server_specification_id )
+                                      FROM   sys.server_audit_specifications
+                                      WHERE  NAME = '#{server_audit_specification_name}');
 
-  describe "Audited Result for Defined Audit Actions" do
-    subject { sql.query(query).column('audited_result').uniq }
-    it { should cmp "SUCCESS AND FAILURE" }
+  )
+
+  server_trace = false
+  server_audit = true
+
+  sql_session = mssql_session(port: 49789) if sql_session.nil?
+
+  describe.one do
+    describe 'SQL Server Trace is in use for audit purposes' do
+      subject { server_trace }
+      it { should be true }
+    end
+
+    describe 'SQL Server Audit is in use for audit purposes' do
+      subject { server_audit }
+      it { should be true }
+    end
   end
 
-  describe "Defined Audit Actions" do
-    subject { REQUIRED_AUDITS_ACTIONS }
-    it { should be_in FOUND_ACTIONS }
+  if server_trace
+    describe 'List defined traces for the SQL server instance' do
+      subject { sql_session.query(query_traces) }
+      it { should_not be_empty }
+    end
+
+    trace_ids = sql_session.query(query_traces).column('id')
+    describe.one do
+      trace_ids.each do |trace_id|
+        found_events = sql_session.query(format(query_trace_eventinfo, trace_id: trace_id)).column('eventid')
+        describe "EventsIDs in Trace ID:#{trace_id}" do
+          subject { REQUIRED_EVENT_ID }
+          it { should be_in found_events }
+        end
+      end
+    end
+  end
+
+  found_actions = sql_session.query(query_audits).column('audit_action_name')
+
+  if server_audit
+    describe 'SQL Server Audit' do
+      describe 'Audited Result for Defined Audit Actions' do
+        subject { sql_session.query(query_audits).column('audited_result').uniq }
+        it { should cmp 'SUCCESS AND FAILURE' }
+      end
+      describe 'Defined Audit Actions' do
+        subject { REQUIRED_AUDITS_ACTIONS }
+        it { should be_in found_actions }
+      end
+    end
   end
 end
-

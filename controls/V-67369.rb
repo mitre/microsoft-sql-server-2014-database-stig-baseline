@@ -59,5 +59,20 @@ system and user-defined Stored Procedures for modification.
 establish a monitoring job.  This should be supplemented with a process for
 informing the appropriate personnel.  Other techniques for achieving the same
 ends, such as the use of DDL triggers, are acceptable.)"
+
+  query = %(
+    SELECT enabled
+    FROM   msdb.dbo.sysjobs
+    WHERE  [name] = '%<job_name>s'
+  )
+
+  job_name = 'STIG_database_object_tracking'
+
+  sql_session = mssql_session(port: 497_89) if sql_session.nil?
+
+  describe "Scheduled job: #{job_name} enabled status" do
+    subject { sql_session.query(format(query, job_name: job_name)).column('enabled') }
+    it { should cmp 1 }
+  end
 end
 

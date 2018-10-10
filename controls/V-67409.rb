@@ -120,14 +120,11 @@ the Microsoft Developer Network on how to do this, perform a web search for
       sys.dm_database_encryption_keys
     )
 
-  sql = mssql_session(port:49789) unless !sql.nil?
+  sql = mssql_session(port:49789) if sql.nil?
 
   describe "TRACEFLAG 3625" do
     subject { sql.query( query ).rows[0] }
     its('status') { should cmp 1 }
     its('global') { should cmp 1 }
   end
-
-
 end
-

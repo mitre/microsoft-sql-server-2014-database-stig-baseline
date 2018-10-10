@@ -51,6 +51,7 @@ If it does not implement the documented behavior, this is a finding."
 (stored procedures, functions, triggers) and application source code, to
 implement the documented behavior."
 
-  only_if { false }
+  describe 'This test currently has no automated tests, you must check manually' do
+    skip 'This check must be preformed manually'
+  end
 end
-

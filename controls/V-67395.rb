@@ -91,6 +91,7 @@ injection, this is a finding."
   tag "fix": "Where dynamic code execution is used, modify the code to
 implement protections against code injection."
 
-  only_if { false }
+  describe 'This test currently has no automated tests, you must check manually' do
+    skip 'This check must be preformed manually'
+  end
 end
-

@@ -57,6 +57,7 @@ parameters, this is a finding."
 the objective could practically be satisfied by static execution with strongly
 typed parameters, modify the code to do so."
 
-    only_if { false }
+  describe 'This test currently has no automated tests, you must check manually' do
+    skip 'This check must be preformed manually'
+  end
 end
-

@@ -74,5 +74,8 @@ accurate to a granularity of one second or finer, this is a finding."
 time stamps in audit-trail and activity-tracking columns/fields in application
 data include date and time of day, to a granularity of one second or finer, and
 are recorded accurately."
-end
 
+  describe 'This test currently has no automated tests, you must check manually' do
+    skip 'This check must be preformed manually'
+  end
+end

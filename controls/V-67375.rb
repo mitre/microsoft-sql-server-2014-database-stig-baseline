@@ -201,9 +201,7 @@ ALTER AUTHORIZATION ON DATABASE::<DB name> TO <new owner name>;
 GO
 Verify that this produced the intended result by re-running the Check query."
 
-
-
-  query= %Q(
+  query = %(
     WITH FixedServerRoles(RoleName) AS
     (
           SELECT 'sysadmin'
@@ -231,11 +229,10 @@ Verify that this produced the intended result by re-running the Check query."
     GO
   )
 
-  sql = mssql_session(port:49371) unless !sql.nil?
+  sql = mssql_session(port: 49371) if sql.nil?
 
-  describe "Non Compliant Database list" do
+  describe 'Non Compliant Database list' do
     subject { sql.query(query).column('database') }
     it { should be_empty }
   end
 end
-

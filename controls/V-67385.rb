@@ -62,33 +62,31 @@ The symmetric key must specify a certificate or asymmetric key for encryption."
 
 #review
 
-  query=%Q(
-    SELECT 
-        s.name, k.crypt_type_desc 
-    FROM 
-        [%{db_name}].sys.symmetric_keys s, [%{db_name}].sys.key_encryptions k 
-    WHERE 
-        s.symmetric_key_id = k.key_id 
-    AND 
-        s.name <> '##MS_DatabaseMasterKey##' 
-    AND 
-        k.crypt_type IN ('ESKS', 'ESKP','ESP2','ESP3') 
-    ORDER 
-        BY s.name, k.crypt_type_desc;
+  query = %(
+    SELECT
+        s.name, k.crypt_type_desc
+    FROM
+        [%<db_name>s].sys.symmetric_keys s, [%<db_name>s].sys.key_encryptions k 
+    WHERE
+        s.symmetric_key_id = k.key_id
+    AND
+        s.name <> '##MS_DatabaseMasterKey##'
+    AND
+        k.crypt_type IN ('ESKS', 'ESKP','ESP2','ESP3')
+    ORDER
+        BY s.name, k.crypt_type_desc
     )
 
-  sql = mssql_session(port:49789) unless !sql.nil?
+  sql = mssql_session(port:49789) if sql.nil?
 
   db_list = sql.query('SELECT name FROM sys.databases').column('name')
 
   db_list.each do |db|
     describe "List of Symmetric keys in DB: #{db} not encrypted by DoD certificate " do
-      subject { sql.query( query % { db_name: db }).column('name') }
+      subject { sql.query(format(query, db_name: db)).column('name') }
       it { should be_empty }
     end
   end
 
-  #@TODO implement: If the certificate specified is not a DoD PKI certificate, this is a finding."
-
+  # @TODO implement: If the certificate specified is not a DoD PKI certificate, this is a finding."
 end
-
