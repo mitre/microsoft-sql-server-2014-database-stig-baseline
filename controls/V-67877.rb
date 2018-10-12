@@ -68,8 +68,7 @@ SELECT
 FROM sys.dm_database_encryption_keys e
 RIGHT JOIN sys.databases d ON DB_NAME(e.database_id) = d.name
 WHERE d.name NOT IN ('master','model','msdb')
-ORDER BY 1
-;
+ORDER BY 1;
 
 For each user database where encryption is required, verify that encryption is
 in effect. If not, this is a finding.
@@ -88,5 +87,74 @@ master key, and then set encryption on.
 Implement physical security measures, operating system access control lists and
 organizational controls appropriate to the sensitivity level of the data in the
 database(s)."
-end
 
+
+  encrypted_databases = attribute('encrypted_databases')
+  data_at_rest_encryption_required = attribute('data_at_rest_encryption_required')
+  full_disk_encryption_inplace = attribute('full_disk_encryption_inplace')
+
+  query = %(
+    SELECT
+          d.name AS [Database Name],
+          CASE e.encryption_state
+                WHEN 0 THEN 'No database encryption key present, no encryption'
+                WHEN 1 THEN 'Unencrypted'
+                WHEN 2 THEN 'Encryption in progress'
+                WHEN 3 THEN 'Encrypted'
+                WHEN 4 THEN 'Key change in progress'
+                WHEN 5 THEN 'Decryption in progress'
+                WHEN 6 THEN 'Protection change in progress'
+          END AS [Encryption State]
+    FROM sys.dm_database_encryption_keys e
+    RIGHT JOIN sys.databases d ON DB_NAME(e.database_id) = d.name
+    WHERE d.name IN ('#{encrypted_databases.join("', '")}')
+  )
+
+  sql_session = mssql_session(port: 49789) if sql_session.nil?
+
+  unless data_at_rest_encryption_required
+    impact 0.0
+    desc 'If the application owner and Authorizing Official have
+    determined that encryption of data at rest is NOT required, this is not a
+    finding.'
+
+    describe 'Encryption of data at rest' do
+      subject { data_at_rest_encryption_required }
+      it { should be false }
+    end
+  end
+
+  if full_disk_encryption_inplace
+    impact 0.0
+    desc 'If full-disk encryption is being used, this is not a finding.'
+
+    describe 'Encryption of data at rest' do
+      subject { full_disk_encryption_inplace }
+      it { should be true }
+    end
+  end
+
+  if encrypted_databases.empty?
+    impact 0.0
+    desc 'If no databases are required to encrypted, this is not a finding.'
+
+    describe 'Databases are required to encrypted' do
+      subject { encrypted_databases }
+      it { should be_empty }
+    end
+  end
+
+  unless encrypted_databases.empty?
+    describe 'Databases found from the query' do
+      subject { sql_session.query(query) }
+      it { should_not be_empty }
+    end
+
+    sql_session.query(query).rows.each do |row|
+      describe "Database: #{row['database name']} encryption state" do
+        subject { row['encryption state'] }
+        it { should cmp 'Encrypted'}
+      end
+    end
+  end
+end

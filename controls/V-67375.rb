@@ -229,10 +229,10 @@ Verify that this produced the intended result by re-running the Check query."
     GO
   )
 
-  sql = mssql_session(port: 49371) if sql.nil?
+  sql_session = mssql_session(port: 49371) if sql_session.nil?
 
   describe 'Non Compliant Database list' do
-    subject { sql.query(query).column('database') }
+    subject { sql_session.query(query).column('database') }
     it { should be_empty }
   end
 end

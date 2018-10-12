@@ -100,5 +100,28 @@ GO
 
 Use REVOKE and/or DENY and/or ALTER SERVER ROLE ... DROP MEMBER ... statements
 to remove CONTROL DATABASE permission from logins that do not need it."
-end
 
+  approved_audit_maintainers = attribute('approved_audit_maintainers')
+
+  query = %(
+    SELECT DPE.PERMISSION_NAME AS 'PERMISSION',
+           DPM.NAME            AS 'ROLE MEMBER',
+           DPR.NAME            AS 'ROLE NAME'
+    FROM   SYS.DATABASE_ROLE_MEMBERS DRM
+           --SELECT * FROM SYS.DATABASE_ROLE_MEMBERS DRM
+           JOIN SYS.DATABASE_PERMISSIONS DPE
+             ON DRM.ROLE_PRINCIPAL_ID = DPE.GRANTEE_PRINCIPAL_ID
+           JOIN SYS.DATABASE_PRINCIPALS DPR
+             ON DRM.ROLE_PRINCIPAL_ID = DPR.PRINCIPAL_ID
+           JOIN SYS.DATABASE_PRINCIPALS DPM
+             ON DRM.MEMBER_PRINCIPAL_ID = DPM.PRINCIPAL_ID
+    WHERE  DPE.PERMISSION_NAME IN ( 'CONTROL', 'ALTER ANY DATABASE AUDIT' )
+  )
+
+  sql_session = mssql_session(port: 49789) if sql_session.nil?
+
+  describe 'List of approved audit maintainers' do
+    subject { sql_session.query(query).column('role member').uniq }
+    it { should match_array approved_audit_maintainers }
+  end
+end

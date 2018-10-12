@@ -62,5 +62,8 @@ finding."
   tag "fix": "Use GRANT, REVOKE, DENY, ALTER ROLE … ADD MEMBER … and/or ALTER
 ROLE …. DROP MEMBER statements to add and remove permissions on database-level
 securables, bringing them into line with the documented requirements."
-end
 
+  describe 'This test currently has no automated tests, you must check manually' do
+    skip 'This check must be preformed manually'
+  end
+end

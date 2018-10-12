@@ -31,7 +31,7 @@ also exist. Custom application code is also a viable way to implement a
 solution.
   "
 
-  if security_labeling_required
+  if attribute('security_labeling_required')
     impact 0.7
   else
     impact 0.0

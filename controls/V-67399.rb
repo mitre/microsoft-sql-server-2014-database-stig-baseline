@@ -80,10 +80,10 @@ Click Add >> Click OK >> Restart SQL instance."
     GO
     )
 
-  sql = mssql_session(port: 49789) if sql.nil?
+  sql_session = mssql_session(port: 49789) if sql_session.nil?
 
   describe 'TRACEFLAG 3625' do
-    subject { sql.query(query).rows[0] }
+    subject { sql_session.query(query).rows[0] }
     its('status') { should cmp 1 }
     its('global') { should cmp 1 }
   end

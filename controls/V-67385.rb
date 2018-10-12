@@ -59,8 +59,7 @@ or asymmetric key>;
 
 The symmetric key must specify a certificate or asymmetric key for encryption."
 
-
-#review
+  # review
 
   query = %(
     SELECT
@@ -77,13 +76,13 @@ The symmetric key must specify a certificate or asymmetric key for encryption."
         BY s.name, k.crypt_type_desc
     )
 
-  sql = mssql_session(port:49789) if sql.nil?
+  sql_session = mssql_session(port: 49789) if sql_session.nil?
 
-  db_list = sql.query('SELECT name FROM sys.databases').column('name')
+  db_list = sql_session.query('SELECT name FROM sys.databases').column('name')
 
   db_list.each do |db|
-    describe "List of Symmetric keys in DB: #{db} not encrypted by DoD certificate " do
-      subject { sql.query(format(query, db_name: db)).column('name') }
+    describe "List of Symmetric keys in DB: #{db} not encrypted by DoD certificate" do
+      subject { sql_session.query(format(query, db_name: db)).column('name') }
       it { should be_empty }
     end
   end

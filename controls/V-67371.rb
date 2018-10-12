@@ -70,6 +70,7 @@ Caution:  this can break code.  This Fix should be implemented in conjunction
 with corrections to such code.  Test before deploying in production.  Deploy
 during a scheduled maintenance window."
 
+  # sql query from  
   query = %(
     ;WITH objects_cte
          AS (SELECT o.NAME,
@@ -78,17 +79,17 @@ during a scheduled maintenance window."
                       WHEN o.principal_id IS NULL THEN s.principal_id
                       ELSE o.principal_id
                     END AS principal_id
-             FROM   %<db_name>s.sys.objects o
-                    INNER JOIN %<db_name>s.sys.schemas s
+             FROM   [%<db_name>s].sys.objects o
+                    INNER JOIN [%<db_name>s].sys.schemas s
                             ON o.schema_id = s.schema_id
              WHERE  o.is_ms_shipped = 0)
     SELECT cte.NAME,
            cte.type_desc,
            dp.NAME AS ObjectOwner
     FROM   objects_cte cte
-           INNER JOIN %<db_name>s.sys.database_principals dp
+           INNER JOIN [%<db_name>s].sys.database_principals dp
                    ON cte.principal_id = dp.principal_id
-    WHERE  dp.NAME NOT IN ( 'dbo', 'sys' ) 
+    WHERE  dp.NAME NOT IN ( 'dbo', 'sys' )
   )
 
   sql_session = mssql_session(port: 49789) if sql_session.nil?

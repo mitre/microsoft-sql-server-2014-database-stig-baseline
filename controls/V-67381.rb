@@ -58,5 +58,51 @@ If the additional requirements are not in place, this is a finding."
 known only to the application administrator.  Where not possible, configure
 additional audit events or alerts to detect unauthorized access to the Database
 Master Key by users not authorized to view sensitive data."
-end
 
+  query = %(
+    SELECT NAME
+    FROM   [master].sys.databases
+    WHERE  is_master_key_encrypted_by_server = 1
+           AND owner_sid <> 1
+           AND state = 0;
+  )
+
+  encrypted_databases = ['EmpData']
+
+  sql_session = mssql_session(port: 49789) if sql_session.nil?
+
+  results = sql_session.query(query)
+
+  if encrypted_databases.empty? && results.empty?
+    impact 0.0
+    desc 'No databases require encryption hence this is not a finding'
+
+    describe 'List of Databases that require encryption' do
+      subject { results.column('name') }
+      it { should be_empty }
+    end
+  end
+  unless Set.new(encrypted_databases).eql?(Set.new(results.column('name')))
+    describe 'List of Databases that require encryption' do
+      subject { results.column('name') }
+      it { should match_array encrypted_databases }
+    end
+  end
+
+  unless results.empty?
+    describe 'This test currently has no automated tests, you must check manually' do
+      skip "For the databases #{results.column('name')} verify in the System Security 
+      Plan that encryption of the Database Master Key using the Service Master Key 
+      is acceptable and approved by the Information Owner, and the encrypted data 
+      does not require additional protections to deter or detect DBA access. 
+      If not approved, this is a finding.
+
+      If approved and additional protections are required, then verify the additional
+      requirements are in place in accordance with the System Security Plan. These
+      may include additional auditing on access of the Database Master Key with
+      alerts or other automated monitoring.
+
+      If the additional requirements are not in place, this is a finding."
+    end
+  end
+end

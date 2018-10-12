@@ -41,10 +41,10 @@ EXEC SP_CONTROL_DBMASTERKEY_PASSWORD @db_name = '<database name>', @action
           [master].sys.master_key_passwords
   )
 
-  sql = mssql_session(port: 49371) if sql.nil?
+  sql_session = mssql_session(port: 49371) if sql_session.nil?
 
-  describe "Count Database Master Key passwords stored in credentials within the database" do
-    subject { sql.query(query).row(0).column('count_of_ids') }
+  describe 'Count Database Master Key passwords stored in credentials within the database' do
+    subject { sql_session.query(query).row(0).column('count_of_ids') }
     its('value') { should cmp 0 }
   end
 end

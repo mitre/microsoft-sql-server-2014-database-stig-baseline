@@ -61,13 +61,13 @@ establish a monitoring job.  This should be supplemented with a process for
 informing the appropriate personnel.  Other techniques for achieving the same
 ends, such as the use of DDL triggers, are acceptable.)"
 
-  query = %Q(
+  query = %(
     SELECT enabled
     FROM   msdb.dbo.sysjobs
     WHERE  [name] = '%<job_name>s'
   )
 
-  job_name = 'STIG_database_object_tracking'
+  job_name = attribute('track_functions_changes_job_name')
 
   sql_session = mssql_session(port: 49789) if sql_session.nil?
 

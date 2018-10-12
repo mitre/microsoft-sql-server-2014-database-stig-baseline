@@ -6,3 +6,52 @@ copyright_email: you@example.com
 license: Apache-2.0
 summary: 'This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via e-mail to the following address: disa.stig_spt@mail.mil.'
 version: 0.1.0
+attributes:
+  - name: server_trace
+    type: boolean
+    default: false
+
+  - name: server_audit
+    type: boolean
+    default: true
+
+  - name: server_audit_specification_name
+    type: string
+    default: blah2_spec
+
+  - name: approved_audit_maintainers
+    type: array
+    default: []
+
+  - name: track_stored_procedures_changes_job_name
+    type: string
+    default: 'STIG_database_object_tracking'
+
+  - name: track_triggers_changes_job_name
+    type: string
+    default: 'STIG_database_object_tracking'
+
+  - name: track_functions_changes_job_name 
+    type: string
+    default: 'STIG_database_object_tracking'
+
+  - name: authorized_users
+    type: array
+    default: []
+
+  - name: encrypted_databases
+    type: array
+    default: []
+
+  - name: security_labeling_required
+    type: boolean
+    default: false
+
+  - name: data_at_rest_encryption_required
+    type: boolean
+    default: false
+
+  - name: full_disk_encryption_inplace
+    type: boolean
+    default: false
+

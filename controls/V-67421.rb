@@ -123,7 +123,7 @@ GO"
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
   )
 
-  server_audit_specification_name = 'blah2_spec'
+  server_audit_specification_name = attribute('server_audit_specification_name')
 
   query_audits = %(
     SELECT audit_action_name,
@@ -136,8 +136,8 @@ GO"
            AND audit_action_name = 'SCHEMA_OBJECT_CHANGE_GROUP';
   )
 
-  server_trace = true
-  server_audit = false
+  server_trace = attribute('server_trace')
+  server_audit = attribute('server_audit')
 
   sql_session = mssql_session(port: 49789) if sql_session.nil?
 
@@ -182,7 +182,7 @@ GO"
       end
       describe 'Audited Result for Defined Audit Actions' do
         subject { sql_session.query(query_audits).column('audited_result').uniq.to_s }
-        it { should match %r(SUCCESS AND FAILURE|SUCCESS) }
+        it { should match /SUCCESS AND FAILURE|SUCCESS/ }
       end
     end
   end

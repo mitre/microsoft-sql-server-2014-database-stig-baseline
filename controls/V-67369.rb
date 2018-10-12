@@ -66,7 +66,7 @@ ends, such as the use of DDL triggers, are acceptable.)"
     WHERE  [name] = '%<job_name>s'
   )
 
-  job_name = 'STIG_database_object_tracking'
+  job_name = attribute('track_stored_procedures_changes_job_name')
 
   sql_session = mssql_session(port: 497_89) if sql_session.nil?
 
@@ -75,4 +75,3 @@ ends, such as the use of DDL triggers, are acceptable.)"
     it { should cmp 1 }
   end
 end
-

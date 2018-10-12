@@ -252,7 +252,7 @@ audit; edit it as necessary to capture any additional, locally-defined events."
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
   )
 
-  server_audit_specification_name = 'blah2_spec'
+  server_audit_specification_name = attribute('server_audit_specification_name')
 
   query_audits = %(
     SELECT audit_action_name,
@@ -264,8 +264,8 @@ audit; edit it as necessary to capture any additional, locally-defined events."
 
   )
 
-  server_trace = false
-  server_audit = true
+  server_trace = attribute('server_trace')
+  server_audit = attribute('server_audit')
 
   sql_session = mssql_session(port: 49789) if sql_session.nil?
 
