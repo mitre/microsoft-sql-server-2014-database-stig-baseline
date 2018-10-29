@@ -97,8 +97,8 @@ USE [master];
 GO
 SELECT * FROM sys.server_audit_specification_details WHERE
 server_specification_id =
-(SELECT server_specification_id FROM sys.server_audit_specifications WHERE
-[name] = '<server_audit_specification_name>')
+(SELECT server_specification_id FROM sys.server_audit_implemented_specifications WHERE
+[name] = '<server_audit_implemented_specification_name>')
 AND audit_action_name = 'SCHEMA_OBJECT_CHANGE_GROUP';
 
 If no row is returned, this is a finding.
@@ -117,13 +117,13 @@ Alternatively, to add the necessary data capture to an existing server audit
 specification, run the script:
 USE [master];
 GO
-ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
+ALTER SERVER AUDIT SPECIFICATION <server_audit_implemented_specification_name> WITH (STATE
 = OFF);
 GO
-ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> ADD
+ALTER SERVER AUDIT SPECIFICATION <server_audit_implemented_specification_name> ADD
 (SCHEMA_OBJECT_CHANGE_GROUP);
 GO
-ALTER SERVER AUDIT SPECIFICATION <server_audit_specification_name> WITH (STATE
+ALTER SERVER AUDIT SPECIFICATION <server_audit_implemented_specification_name> WITH (STATE
 = ON);
 GO"
   query_traces = %(
@@ -133,37 +133,37 @@ GO"
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
   )
 
-  server_audit_specification_name = attribute('server_audit_specification_name')
-
   query_audits = %(
-    SELECT audit_action_name,
+    SELECT server_specification_id,
+           audit_action_name,
            audited_result
     FROM   sys.server_audit_specification_details
-    WHERE  server_specification_id =
-           (SELECT server_specification_id
-            FROM   sys.server_audit_specifications
-            WHERE  [name] = '#{server_audit_specification_name}')
-           AND audit_action_name = 'SCHEMA_OBJECT_CHANGE_GROUP';
+    WHERE  audit_action_name = 'SCHEMA_OBJECT_CHANGE_GROUP';
   )
 
-  server_trace = attribute('server_trace')
-  server_audit = attribute('server_audit')
+  server_trace_implemented = attribute('server_trace_implemented')
+  server_audit_implemented = attribute('server_audit_implemented')
 
-  sql_session = mssql_session(port: 49789) if sql_session.nil?
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
 
   describe.one do
     describe 'SQL Server Trace is in use for audit purposes' do
-      subject { server_trace }
+      subject { server_trace_implemented }
       it { should be true }
     end
 
     describe 'SQL Server Audit is in use for audit purposes' do
-      subject { server_audit }
+      subject { server_audit_implemented }
       it { should be true }
     end
   end
 
-  if server_trace
+  if server_trace_implemented
     describe 'List defined traces for the SQL server instance' do
       subject { sql_session.query(query_traces) }
       it { should_not be_empty }
@@ -184,7 +184,7 @@ GO"
     end
   end
 
-  if server_audit
+  if server_audit_implemented
     describe 'SQL Server Audit:' do
       describe 'Defined Audits with Audit Action SCHEMA_OBJECT_CHANGE_GROUP' do
         subject { sql_session.query(query_audits) }

@@ -70,36 +70,41 @@ Caution:  this can break code.  This Fix should be implemented in conjunction
 with corrections to such code.  Test before deploying in production.  Deploy
 during a scheduled maintenance window."
 
-  # sql query from  
+  # The query in checktext is assumes the presence of STIG shema as supplied 
+  # with the STIG supplimental. The below query ( taken from 2016 MSSQL STIG) 
+  # will work without it.
+
   query = %(
-    ;WITH objects_cte
-         AS (SELECT o.NAME,
-                    o.type_desc,
-                    CASE
-                      WHEN o.principal_id IS NULL THEN s.principal_id
-                      ELSE o.principal_id
-                    END AS principal_id
-             FROM   [%<db_name>s].sys.objects o
-                    INNER JOIN [%<db_name>s].sys.schemas s
-                            ON o.schema_id = s.schema_id
-             WHERE  o.is_ms_shipped = 0)
-    SELECT cte.NAME,
-           cte.type_desc,
-           dp.NAME AS ObjectOwner
-    FROM   objects_cte cte
-           INNER JOIN [%<db_name>s].sys.database_principals dp
-                   ON cte.principal_id = dp.principal_id
-    WHERE  dp.NAME NOT IN ( 'dbo', 'sys' )
+      ;WITH OBJECTS_CTE
+           AS (SELECT O.NAME,
+                      O.TYPE_DESC,
+                      CASE
+                        WHEN O.PRINCIPAL_ID IS NULL THEN S.PRINCIPAL_ID
+                        ELSE O.PRINCIPAL_ID
+                      END AS PRINCIPAL_ID
+               FROM   SYS.OBJECTS O
+                      INNER JOIN SYS.SCHEMAS S
+                              ON O.SCHEMA_ID = S.SCHEMA_ID
+               WHERE  O.IS_MS_SHIPPED = 0)
+      SELECT CTE.NAME,
+             CTE.TYPE_DESC,
+             DP.NAME AS OBJECTOWNER
+      FROM   OBJECTS_CTE CTE
+             INNER JOIN SYS.DATABASE_PRINCIPALS DP
+                     ON CTE.PRINCIPAL_ID = DP.PRINCIPAL_ID
+      ORDER  BY DP.NAME,
+                CTE.NAME
   )
 
-  sql_session = mssql_session(port: 49789) if sql_session.nil?
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
 
-  db_list = sql_session.query('SELECT name FROM sys.databases').column('name')
-
-  db_list.each do |db|
-    describe "Authorized users for Database: #{db}" do
-      subject { sql_session.query(format(query, db_name: db)).column('objectowner').uniq }
-      it { should cmp attribute('authorized_users') }
-    end
+  describe "Authorized users for Database: #{attribute('db_name')}" do
+    subject { sql_session.query(query).column('objectowner').uniq }
+    it { should cmp attribute('authorized_principals') }
   end
 end

@@ -80,7 +80,12 @@ Click Add >> Click OK >> Restart SQL instance."
     GO
     )
 
-  sql_session = mssql_session(port: 49789) if sql_session.nil?
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
 
   describe 'TRACEFLAG 3625' do
     subject { sql_session.query(query).rows[0] }

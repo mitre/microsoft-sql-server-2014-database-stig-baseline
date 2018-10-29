@@ -65,7 +65,7 @@ From the query prompt:
 SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#);
 
 The following required event IDs should all be among those listed; if not, this
-is a finding.
+is a finding. 
 
 Any additional events locally defined should also be in the list; if not, this
 is a finding.
@@ -149,8 +149,8 @@ USE [master];
 GO
 SELECT * FROM sys.server_audit_specification_details WHERE
 server_specification_id =
-(SELECT server_specification_id FROM sys.server_audit_specifications WHERE
-[name] = '<server_audit_specification_name>');
+(SELECT server_specification_id FROM sys.server_audit_implemented_specifications WHERE
+[name] = '<server_audit_implemented_specification_name>');
 GO
 
 Examine the list produced by the query.
@@ -252,36 +252,35 @@ audit; edit it as necessary to capture any additional, locally-defined events."
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
   )
 
-  server_audit_specification_name = attribute('server_audit_specification_name')
-
   query_audits = %(
-    SELECT audit_action_name,
+    SELECT server_specification_id,
+           audit_action_name,
            audited_result
     FROM   sys.server_audit_specification_details
-    WHERE  server_specification_id = (SELECT DISTINCT( server_specification_id )
-                                      FROM   sys.server_audit_specifications
-                                      WHERE  NAME = '#{server_audit_specification_name}');
-
   )
 
-  server_trace = attribute('server_trace')
-  server_audit = attribute('server_audit')
+  server_trace_implemented = attribute('server_trace_implemented')
+  server_audit_implemented = attribute('server_audit_implemented')
 
-  sql_session = mssql_session(port: 49789) if sql_session.nil?
-
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
   describe.one do
     describe 'SQL Server Trace is in use for audit purposes' do
-      subject { server_trace }
+      subject { server_trace_implemented }
       it { should be true }
     end
 
     describe 'SQL Server Audit is in use for audit purposes' do
-      subject { server_audit }
+      subject { server_audit_implemented }
       it { should be true }
     end
   end
 
-  if server_trace
+  if server_trace_implemented
     describe 'List defined traces for the SQL server instance' do
       subject { sql_session.query(query_traces) }
       it { should_not be_empty }
@@ -301,7 +300,7 @@ audit; edit it as necessary to capture any additional, locally-defined events."
 
   found_actions = sql_session.query(query_audits).column('audit_action_name')
 
-  if server_audit
+  if server_audit_implemented
     describe 'SQL Server Audit' do
       describe 'Audited Result for Defined Audit Actions' do
         subject { sql_session.query(query_audits).column('audited_result').uniq }

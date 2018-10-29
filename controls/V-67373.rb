@@ -104,9 +104,14 @@ GO"
     GO
   )
 
-  sql_session = mssql_session(port: 49371) if sql_session.nil?
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
 
-  describe "Non Compliant Database list" do
+  describe 'Non Compliant Database list' do
     subject { sql_session.query(query).column('database') }
     it { should be_empty }
   end

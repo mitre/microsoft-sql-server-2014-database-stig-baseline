@@ -69,7 +69,12 @@ ends, such as the use of DDL triggers, are acceptable.)"
 
   job_name = attribute('track_functions_changes_job_name')
 
-  sql_session = mssql_session(port: 49789) if sql_session.nil?
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
 
   describe "Scheduled job: #{job_name} enabled status" do
     subject { sql_session.query(format(query, job_name: job_name)).column('enabled') }

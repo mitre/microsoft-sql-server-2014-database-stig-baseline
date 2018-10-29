@@ -67,9 +67,14 @@ Master Key by users not authorized to view sensitive data."
            AND state = 0;
   )
 
-  encrypted_databases = ['EmpData']
+  encrypted_databases = attribute('encrypted_databases')
 
-  sql_session = mssql_session(port: 49789) if sql_session.nil?
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
 
   results = sql_session.query(query)
 

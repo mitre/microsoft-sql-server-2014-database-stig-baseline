@@ -103,12 +103,15 @@ to remove CONTROL DATABASE permission from logins that do not need it."
 
   approved_audit_maintainers = attribute('approved_audit_maintainers')
 
+  # The query in checktext is assumes the presence of STIG shema as supplied with
+  # the STIG supplimental. The below query ( partially taken from 2016 MSSQL STIG)
+  # will work without it.
+
   query = %(
     SELECT DPE.PERMISSION_NAME AS 'PERMISSION',
            DPM.NAME            AS 'ROLE MEMBER',
            DPR.NAME            AS 'ROLE NAME'
     FROM   SYS.DATABASE_ROLE_MEMBERS DRM
-           --SELECT * FROM SYS.DATABASE_ROLE_MEMBERS DRM
            JOIN SYS.DATABASE_PERMISSIONS DPE
              ON DRM.ROLE_PRINCIPAL_ID = DPE.GRANTEE_PRINCIPAL_ID
            JOIN SYS.DATABASE_PRINCIPALS DPR
@@ -116,9 +119,15 @@ to remove CONTROL DATABASE permission from logins that do not need it."
            JOIN SYS.DATABASE_PRINCIPALS DPM
              ON DRM.MEMBER_PRINCIPAL_ID = DPM.PRINCIPAL_ID
     WHERE  DPE.PERMISSION_NAME IN ( 'CONTROL', 'ALTER ANY DATABASE AUDIT' )
+    OR DPM.NAME IN ('db_owner')
   )
 
-  sql_session = mssql_session(port: 49789) if sql_session.nil?
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
 
   describe 'List of approved audit maintainers' do
     subject { sql_session.query(query).column('role member').uniq }

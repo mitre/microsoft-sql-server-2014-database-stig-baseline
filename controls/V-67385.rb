@@ -65,7 +65,7 @@ The symmetric key must specify a certificate or asymmetric key for encryption."
     SELECT
         s.name, k.crypt_type_desc
     FROM
-        [%<db_name>s].sys.symmetric_keys s, [%<db_name>s].sys.key_encryptions k 
+        sys.symmetric_keys s, sys.key_encryptions k
     WHERE
         s.symmetric_key_id = k.key_id
     AND
@@ -76,16 +76,17 @@ The symmetric key must specify a certificate or asymmetric key for encryption."
         BY s.name, k.crypt_type_desc
     )
 
-  sql_session = mssql_session(port: 49789) if sql_session.nil?
+  sql_session = mssql_session(user: attribute('user'),
+                              password: attribute('password'),
+                              host: attribute('host'),
+                              instance: attribute('instance'),
+                              port: attribute('port'),
+                              db_name: attribute('db_name'))
 
-  db_list = sql_session.query('SELECT name FROM sys.databases').column('name')
-
-  db_list.each do |db|
-    describe "List of Symmetric keys in DB: #{db} not encrypted by DoD certificate" do
-      subject { sql_session.query(format(query, db_name: db)).column('name') }
-      it { should be_empty }
-    end
+  describe "List of Symmetric keys in DB: #{attribute('db_name')} not encrypted\
+  by DoD certificate" do
+    subject { sql_session.query(query).column('name') }
+    it { should be_empty }
   end
-
   # @TODO implement: If the certificate specified is not a DoD PKI certificate, this is a finding."
 end
