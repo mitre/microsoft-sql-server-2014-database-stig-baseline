@@ -34,6 +34,8 @@ solution.
     impact 0.7
   else
     impact 0.0
+    desc 'Security labeling is stated as `not required` in the attributes file,
+    this control is not applicable'
   end
 
   tag "gtitle": "SRG-APP-000313-DB-000309"
