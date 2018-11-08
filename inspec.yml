@@ -53,6 +53,11 @@ attributes:
     type: boolean
     default: true
 
+  - name: server_audit_at_database_level_required
+    description: 'Secify if  SQL Server Audit is not in use at the database level'
+    type: boolean
+    default: true
+
   - name: approved_audit_maintainers
     description: 'User with `ALTER ANY DATABASE AUDIT` or `CONTROL` permission'
     type: array

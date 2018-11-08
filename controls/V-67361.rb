@@ -23,7 +23,15 @@ intends to remove most aspects of Trace at some point after SQL Server 2016.
     This version of the requirement deals with SQL Server Audit-based audit
 trails.
   "
-  impact 0.7
+
+  if attribute('server_audit_at_database_level_required')
+    impact 0.7
+  else
+    impact 0.0
+    desc 'Inspec attributes has specified that SQL Server Audit is not in use at
+    the database level, this is not applicable (NA)'
+  end
+
   tag "gtitle": "SRG-APP-000090-DB-000065"
   tag "gid": "V-67361"
   tag "rid": "SV-81851r2_rule"
@@ -104,8 +112,8 @@ to remove CONTROL DATABASE permission from logins that do not need it."
   approved_audit_maintainers = attribute('approved_audit_maintainers')
 
   # The query in checktext is assumes the presence of STIG shema as supplied with
-  # the STIG supplimental. The below query ( partially taken from 2016 MSSQL STIG)
-  # will work without it.
+  # the STIG supplemental. The below query ( partially taken from 2016 MSSQL STIG)
+  # will work without STIG supplemental schema.
 
   query = %(
     SELECT DPE.PERMISSION_NAME AS 'PERMISSION',
