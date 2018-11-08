@@ -22,7 +22,14 @@ Because of this, it may also be appropriate to audit INSERT actions at the
 application level.  However, to capture all INSERTs, whether they come from the
 application or bypass it, the Trace must be configured to cover them.
   "
-  impact 0.7
+  if attribute('server_trace_or_audit_required')
+    impact 0.7
+  else
+    impact 0.0
+    desc 'Inspec attributes has specified that is not required to track categories
+    of information, such as classification or sensitivity level on the target'
+  end
+
   tag "gtitle": "SRG-APP-000498-DB-000346"
   tag "gid": "V-67437"
   tag "rid": "SV-81927r2_rule"

@@ -22,7 +22,15 @@ Audit does.
 necessary to provide this tracking at the application level, if Trace is used
 for audit purposes.
   "
-  impact 0.7
+
+  if attribute('server_trace_or_audit_required')
+    impact 0.7
+  else
+    impact 0.0
+    desc 'Inspec attributes has specified that is not required to track categories 
+    of information, such as classification or sensitivity level on the target'
+  end
+
   tag "gtitle": "SRG-APP-000494-DB-000344"
   tag "gid": "V-67413"
   tag "rid": "SV-81903r2_rule"
