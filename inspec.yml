@@ -34,6 +34,15 @@ attributes:
     type: string
     default: 'master'
 
+  - name: server_trace_or_audit_required
+    description: 'Changes in categorized information must be tracked. Without an 
+    audit trail, unauthorized access to protected data could go undetected.
+    Review the system documentation to determine whether it is required to track
+    categories of information, such as classification or sensitivity level.  
+    If it is not, such controls is not applicable (NA).'
+    type: boolean
+    default: false
+
   - name: server_trace_implemented
     description: 'Set to true If SQL Server Trace is in use for audit purposes'
     type: boolean
@@ -50,17 +59,20 @@ attributes:
     default: []
 
   - name: track_stored_procedures_changes_job_name
-    description: 'name of the timed job that automatically checks all system and user-defined procedures for being modified'
+    description: 'name of the timed job that automatically checks all system and 
+    user-defined procedures for being modified'
     type: string
     default: 'STIG_database_object_tracking'
 
   - name: track_triggers_changes_job_name
-    description: 'name of the timed job that automatically checks all system and user-defined triggers for being modified'
+    description: 'name of the timed job that automatically checks all system and 
+    user-defined triggers for being modified'
     type: string
     default: 'STIG_database_object_tracking'
 
   - name: track_functions_changes_job_name 
-    description: 'name of the timed job that automatically checks all system and user-defined functions for being modified'
+    description: 'name of the timed job that automatically checks all system and 
+    user-defined functions for being modified'
     type: string
     default: 'STIG_database_object_tracking'
 

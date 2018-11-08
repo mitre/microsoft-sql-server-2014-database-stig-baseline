@@ -34,7 +34,14 @@ where one would intuitively expect False; and some other actions that one would
 consider failures (such as selecting from a table that does not exist) may not
 appear at all.
   "
-  impact 0.7
+  if attribute('server_trace_or_audit_required')
+    impact 0.7
+  else
+    impact 0.0
+    desc 'Inspec attributes has specified that is not required to track categories
+    of information, such as classification or sensitivity level on the target'
+  end
+
   tag "gtitle": "SRG-APP-000498-DB-000347"
   tag "gid": "V-67439"
   tag "rid": "SV-81929r2_rule"

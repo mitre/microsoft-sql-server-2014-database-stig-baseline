@@ -36,7 +36,14 @@ permission to perform that action, even though it contains an invalid
 expression.  Some other actions that one would consider failures (such as
 selecting from a table that does not exist) may not appear at all.
   "
-  impact 0.7
+  if attribute('server_trace_or_audit_required')
+    impact 0.7
+  else
+    impact 0.0
+    desc 'Inspec attributes has specified that is not required to track categories
+    of information, such as classification or sensitivity level on the target'
+  end
+
   tag "gtitle": "SRG-APP-000502-DB-000349"
   tag "gid": "V-67427"
   tag "rid": "SV-81917r2_rule"
