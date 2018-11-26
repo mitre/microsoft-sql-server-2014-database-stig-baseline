@@ -2,15 +2,15 @@
 |----------------|-----------------------------------------------------------------------------------|-----|-----------------|-----------|
 |Logical checks| Proper profile directory structure							|*|*|*|
 ||JSON output review (e.g., pass/fail on ,<br>hardened, not hardened, edge cases, etc.)|*|*|*|
-||InSpec syntax checker|Alicia Sturtevant|*|*|
+||InSpec syntax checker|Alicia Sturtevant|*|11/20/2018|
 ||Local commands focused on target not the runner|Alicia Sturtevant|*|n/a|
-|Quality checks|Alignment (including tagging) to original<br> standard (i.e. STIG, CIS Benchmark, NIST Tags)|Alicia Sturtevant|*|*|
-||Descriptive output for findings details|Alicia Sturtevant|*|*|
+|Quality checks|Alignment (including tagging) to original<br> standard (i.e. STIG, CIS Benchmark, NIST Tags)|Alicia Sturtevant|*|11/22/2018|
+||Descriptive output for findings details|Alicia Sturtevant|*|11/20/2018|
 |Docs|Documentation quality (i.e. README)<br> novice level instructions including prerequisites|Yarick Tsagoyko|10/31/2018|n/a|
 ||Consistency across other profile conventions |Alicia Sturtevant|*|n/a|
 ||Spelling grammar|Alicia Sturtevant|*|n/a|
-||Removing debugging documentation and code|Alicia Sturtevant|*|*|
+||Removing debugging documentation and code|Alicia Sturtevant|*|11/20/2018|
 | Error handling |“Profile Error” containment: “null” responses <br>should only happen if InSpec is run with incorrect privileges|*|*|*|
 ||Slowing the target (e.g. filling up disk, CPU spikes)|*|*|*|
 ||Check for risky commands (e.g. rm, del, purge, etc.)|Alicia Sturtevant|*|n/a|
-||Check for “stuck” situations (e.g., profile goes on forever)|Alicia Sturtevant|*|*|
+||Check for “stuck” situations (e.g., profile goes on forever)|Alicia Sturtevant|*|n/a|
