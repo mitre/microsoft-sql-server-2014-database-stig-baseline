@@ -73,6 +73,7 @@ Style/GuardClause:
   Enabled: false
 Style/IfUnlessModifier:
   Enabled: false
+
 Style/MissingRespondToMissing:
   Enabled: false
 Style/MultilineIfModifier:
