@@ -86,11 +86,6 @@ attributes:
     type: array
     default: []
 
-  - name: encrypted_databases
-    description: 'List of Databases that require encryption'
-    type: array
-    default: []
-
   - name: data_at_rest_encryption_required
     description: 'Set to true if data at rest encryption is required'
     type: boolean
@@ -99,9 +94,9 @@ attributes:
   - name: full_disk_encryption_inplace
     description: 'Set to true if full disk encryption is in place'
     type: boolean
-    default: true
+    default: false
 
   - name: security_labeling_required
     description: 'Set to true if security labeling is required'
     type: boolean
-    default: false
+    default: true

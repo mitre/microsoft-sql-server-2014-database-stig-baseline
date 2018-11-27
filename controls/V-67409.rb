@@ -143,7 +143,8 @@ the Microsoft Developer Network on how to do this, perform a web search for
   end
 
   describe 'The following checks must be preformed manually' do
-    skip "If full-disk encryption is required, and Windows or the storage system is not
+    skip "The following checks must be preformed manually:
+      If full-disk encryption is required, and Windows or the storage system is not
       configured for this, this is a finding.
 
       If database transparent data encryption (TDE) is called for, check whether it

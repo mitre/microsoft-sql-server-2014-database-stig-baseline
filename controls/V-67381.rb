@@ -83,7 +83,8 @@ Master Key by users not authorized to view sensitive data."
   end
 
   describe 'The following checks must be preformed manually' do
-    skip "For the database #{results.column('name')} verify in the System Security
+    skip "The following checks must be preformed manually:
+    For the database #{results.column('name')} verify in the System Security
     Plan that encryption of the Database Master Key using the Service Master Key
     is acceptable and approved by the Information Owner, and the encrypted data
     does not require additional protections to deter or detect DBA access.

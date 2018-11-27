@@ -92,7 +92,8 @@ The symmetric key must specify a certificate or asymmetric key for encryption."
   end
 
   describe 'The following checks must be preformed manually' do
-    skip "Review any symmetric keys that have been defined against the System Security
+    skip "The following checks must be preformed manually:
+    Review any symmetric keys that have been defined against the System Security
     Plan.
 
     If any keys are defined that are not documented in the System Security Plan,

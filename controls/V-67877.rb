@@ -141,7 +141,8 @@ database(s)."
   end
 
   describe 'The following checks must be preformed manually' do
-    skip "Verify that there are physical security measures, operating system access
+    skip "The following checks must be preformed manually:
+    Verify that there are physical security measures, operating system access
     control lists and organizational controls appropriate to the sensitivity level
     of the data in the database(s). If not, this is a finding."
   end
