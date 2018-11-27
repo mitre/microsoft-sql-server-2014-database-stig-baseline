@@ -1,4 +1,4 @@
-control "V-67397" do
+control 'V-67397' do
   title "The DBMS and associated applications must provide non-privileged users
 with error messages that provide information necessary for corrective actions
 without revealing information that could be exploited by adversaries."
@@ -45,13 +45,13 @@ to obtain assurances from the development organization that this issue has been
 addressed and must document what has been discovered.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000266-DB-000162"
-  tag "gid": "V-67397"
-  tag "rid": "SV-81887r2_rule"
-  tag "stig_id": "SQL4-00-022800"
-  tag "fix_id": "F-73509r1_fix"
-  tag "cci": ["CCI-001312"]
-  tag "nist": ["SI-11 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000266-DB-000162'
+  tag "gid": 'V-67397'
+  tag "rid": 'SV-81887r2_rule'
+  tag "stig_id": 'SQL4-00-022800'
+  tag "fix_id": 'F-73509r1_fix'
+  tag "cci": ['CCI-001312']
+  tag "nist": ['SI-11 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -76,17 +76,17 @@ system identification in error messages that are displayed to general users.
 Consider enabling trace flag 3625 to mask certain system-level error information
 returned to non-administrative users.
 
-Launch SQL Server Configuration Manager >> Click SQL Services >> Open the 
-instance properties >> Click the Service Parameters tab >> Enter '-T3625' >> 
+Launch SQL Server Configuration Manager >> Click SQL Services >> Open the
+instance properties >> Click the Service Parameters tab >> Enter '-T3625' >>
 Click Add >> Click OK >> Restart SQL instance."
 
   # The below query was taken from 2016 MSSQL STIG
 
-  query = %(
+  query = %{
     DBCC
       TRACESTATUS (3625, -1)
     GO
-    )
+    }
 
   sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),

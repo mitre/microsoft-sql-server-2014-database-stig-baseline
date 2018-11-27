@@ -1,4 +1,4 @@
-control "V-67393" do
+control 'V-67393' do
   title "The DBMS and associated applications must reserve the use of dynamic
 code execution for situations that require it."
   desc  "With respect to database management systems, one class of threat is
@@ -29,13 +29,13 @@ to obtain assurances from the development organization that this issue has been
 addressed and must document what has been discovered
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000251-DB-000391"
-  tag "gid": "V-67393"
-  tag "rid": "SV-81883r2_rule"
-  tag "stig_id": "SQL4-00-031500"
-  tag "fix_id": "F-73505r1_fix"
-  tag "cci": ["CCI-001310"]
-  tag "nist": ["SI-10", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000251-DB-000391'
+  tag "gid": 'V-67393'
+  tag "rid": 'SV-81883r2_rule'
+  tag "stig_id": 'SQL4-00-031500'
+  tag "fix_id": 'F-73505r1_fix'
+  tag "cci": ['CCI-001310']
+  tag "nist": ['SI-10', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false

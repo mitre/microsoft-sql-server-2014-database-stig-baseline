@@ -1,4 +1,4 @@
-control "V-67391" do
+control 'V-67391' do
   title "SQL Server must check the validity of all data inputs except those
 specifically identified by the organization."
   desc  "Invalid user input occurs when a user inserts data or characters into
@@ -28,13 +28,13 @@ to obtain assurances from the development organization that this issue has been
 addressed and must document what has been discovered.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000251-DB-000160"
-  tag "gid": "V-67391"
-  tag "rid": "SV-81881r2_rule"
-  tag "stig_id": "SQL4-00-022500"
-  tag "fix_id": "F-73503r1_fix"
-  tag "cci": ["CCI-001310"]
-  tag "nist": ["SI-10", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000251-DB-000160'
+  tag "gid": 'V-67391'
+  tag "rid": 'SV-81881r2_rule'
+  tag "stig_id": 'SQL4-00-022500'
+  tag "fix_id": 'F-73503r1_fix'
+  tag "cci": ['CCI-001310']
+  tag "nist": ['SI-10', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -74,4 +74,3 @@ the database."
     skip 'This check must be preformed manually'
   end
 end
-

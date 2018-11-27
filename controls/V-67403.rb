@@ -1,4 +1,4 @@
-control "V-67403" do
+control 'V-67403' do
   title "When supporting applications that require security labeling of data,
 SQL Server must associate organization-defined types of security labels having
 organization-defined security label values with information in process."
@@ -38,13 +38,13 @@ solution.
     this control is not applicable'
   end
 
-  tag "gtitle": "SRG-APP-000313-DB-000309"
-  tag "gid": "V-67403"
-  tag "rid": "SV-81893r2_rule"
-  tag "stig_id": "SQL4-00-032000"
-  tag "fix_id": "F-73515r2_fix"
-  tag "cci": ["CCI-002263"]
-  tag "nist": ["AC-16 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000313-DB-000309'
+  tag "gid": 'V-67403'
+  tag "rid": 'SV-81893r2_rule'
+  tag "stig_id": 'SQL4-00-032000'
+  tag "fix_id": 'F-73515r2_fix'
+  tag "cci": ['CCI-002263']
+  tag "nist": ['AC-16 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false

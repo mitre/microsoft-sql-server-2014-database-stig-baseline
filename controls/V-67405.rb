@@ -1,4 +1,4 @@
-control "V-67405" do
+control 'V-67405' do
   title "When supporting applications that require security labeling of data,
 SQL Server must associate organization-defined types of security labels having
 organization-defined security label values with information in transmission."
@@ -38,13 +38,13 @@ solution.
     desc 'Security labeling is stated as `not required` in the attributes file,
     this control is not applicable'
   end
-  tag "gtitle": "SRG-APP-000314-DB-000310"
-  tag "gid": "V-67405"
-  tag "rid": "SV-81895r2_rule"
-  tag "stig_id": "SQL4-00-032100"
-  tag "fix_id": "F-73517r3_fix"
-  tag "cci": ["CCI-002264"]
-  tag "nist": ["AC-16 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000314-DB-000310'
+  tag "gid": 'V-67405'
+  tag "rid": 'SV-81895r2_rule'
+  tag "stig_id": 'SQL4-00-032100'
+  tag "fix_id": 'F-73517r3_fix'
+  tag "cci": ['CCI-002264']
+  tag "nist": ['AC-16 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false

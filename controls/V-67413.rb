@@ -1,4 +1,4 @@
-control "V-67413" do
+control 'V-67413' do
   title "Trace or Audit records must be generated when categorized information
 (e.g., classification levels/security levels) is accessed."
   desc  "Changes in categorized information must be tracked. Without an audit
@@ -27,17 +27,17 @@ for audit purposes.
     impact 0.7
   else
     impact 0.0
-    desc 'Inspec attributes has specified that is not required to track categories 
+    desc 'Inspec attributes has specified that is not required to track categories
     of information, such as classification or sensitivity level on the target'
   end
 
-  tag "gtitle": "SRG-APP-000494-DB-000344"
-  tag "gid": "V-67413"
-  tag "rid": "SV-81903r2_rule"
-  tag "stig_id": "SQL4-00-035800"
-  tag "fix_id": "F-73527r1_fix"
-  tag "cci": ["CCI-000172"]
-  tag "nist": ["AU-12 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000494-DB-000344'
+  tag "gid": 'V-67413'
+  tag "rid": 'SV-81903r2_rule'
+  tag "stig_id": 'SQL4-00-035800'
+  tag "fix_id": 'F-73527r1_fix'
+  tag "cci": ['CCI-000172']
+  tag "nist": ['AU-12 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -123,21 +123,20 @@ ALTER SERVER AUDIT SPECIFICATION <server_audit_implemented_specification_name> W
 = ON);
 GO"
 
-  query_traces = %(
+  query_traces = %{
     SELECT * FROM sys.traces
-  )
-  query_trace_eventinfo = %(
+  }
+  query_trace_eventinfo = %{
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
-  )
+  }
 
-
-  query_audits = %(
+  query_audits = %{
     SELECT server_specification_id,
            audit_action_name,
            audited_result
     FROM   sys.server_audit_specification_details
     WHERE  audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
-  )
+  }
 
   server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')

@@ -1,4 +1,4 @@
-control "V-67365" do
+control 'V-67365' do
   title "SQL Server must be monitored to discover unauthorized changes to
 functions."
   desc  "When dealing with change control issues, it should be noted, any
@@ -26,13 +26,13 @@ configuration, such as Functions, can lead to unauthorized or compromised
 installations.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000133-DB-000179"
-  tag "gid": "V-67365"
-  tag "rid": "SV-81855r2_rule"
-  tag "stig_id": "SQL4-00-014900"
-  tag "fix_id": "F-73477r2_fix"
-  tag "cci": ["CCI-001499"]
-  tag "nist": ["CM-5 (6)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000133-DB-000179'
+  tag "gid": 'V-67365'
+  tag "rid": 'SV-81855r2_rule'
+  tag "stig_id": 'SQL4-00-014900'
+  tag "fix_id": 'F-73477r2_fix'
+  tag "cci": ['CCI-001499']
+  tag "nist": ['CM-5 (6)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -61,11 +61,11 @@ establish a monitoring job.  This should be supplemented with a process for
 informing the appropriate personnel.  Other techniques for achieving the same
 ends, such as the use of DDL triggers, are acceptable.)"
 
-  query = %(
+  query = %{
     SELECT enabled
     FROM   msdb.dbo.sysjobs
     WHERE  [name] = '%<job_name>s'
-  )
+  }
 
   job_name = attribute('track_functions_changes_job_name')
 

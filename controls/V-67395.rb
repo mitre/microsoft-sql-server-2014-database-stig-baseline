@@ -1,4 +1,4 @@
-control "V-67395" do
+control 'V-67395' do
   title "The DBMS and associated applications, when making use of dynamic code
 execution, must scan input data for invalid values that may indicate a code
 injection attack."
@@ -65,13 +65,13 @@ to obtain assurances from the development organization that this issue has been
 addressed and must document what has been discovered
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000251-DB-000392"
-  tag "gid": "V-67395"
-  tag "rid": "SV-81885r2_rule"
-  tag "stig_id": "SQL4-00-031600"
-  tag "fix_id": "F-73507r1_fix"
-  tag "cci": ["CCI-001310"]
-  tag "nist": ["SI-10", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000251-DB-000392'
+  tag "gid": 'V-67395'
+  tag "rid": 'SV-81885r2_rule'
+  tag "stig_id": 'SQL4-00-031600'
+  tag "fix_id": 'F-73507r1_fix'
+  tag "cci": ['CCI-001310']
+  tag "nist": ['SI-10', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false

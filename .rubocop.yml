@@ -73,7 +73,7 @@ Style/GuardClause:
   Enabled: false
 Style/IfUnlessModifier:
   Enabled: false
-Style/MethodMissing:
+Style/MissingRespondToMissing:
   Enabled: false
 Style/MultilineIfModifier:
   Enabled: false
@@ -102,7 +102,7 @@ Style/SymbolArray:
   Enabled: false
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: comma
 Style/UnlessElse:
   Enabled: false

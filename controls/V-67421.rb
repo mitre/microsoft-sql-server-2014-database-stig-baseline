@@ -1,4 +1,4 @@
-control "V-67421" do
+control 'V-67421' do
   title "SQL Server must generate Trace or Audit records when locally-defined
 security objects are modified."
   desc  "SQL Server protects its built-in security objects (tables, views,
@@ -15,13 +15,13 @@ an acceptable solution for the time being.  Note, however, that Microsoft
 intends to remove most aspects of Trace at some point after SQL Server 2016.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000496-DB-000334"
-  tag "gid": "V-67421"
-  tag "rid": "SV-81911r2_rule"
-  tag "stig_id": "SQL4-00-036400"
-  tag "fix_id": "F-73535r1_fix"
-  tag "cci": ["CCI-000172"]
-  tag "nist": ["AU-12 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000496-DB-000334'
+  tag "gid": 'V-67421'
+  tag "rid": 'SV-81911r2_rule'
+  tag "stig_id": 'SQL4-00-036400'
+  tag "fix_id": 'F-73535r1_fix'
+  tag "cci": ['CCI-000172']
+  tag "nist": ['AU-12 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -116,20 +116,20 @@ GO
 ALTER SERVER AUDIT SPECIFICATION <server_audit_implemented_specification_name> WITH (STATE
 = ON);
 GO"
-  query_traces = %(
+  query_traces = %{
     SELECT * FROM sys.traces
-  )
-  query_trace_eventinfo = %(
+  }
+  query_trace_eventinfo = %{
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
-  )
+  }
 
-  query_audits = %(
+  query_audits = %{
     SELECT server_specification_id,
            audit_action_name,
            audited_result
     FROM   sys.server_audit_specification_details
     WHERE  audit_action_name = 'SCHEMA_OBJECT_CHANGE_GROUP';
-  )
+  }
 
   server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')

@@ -28,13 +28,13 @@ an acceptable solution for the time being.  Note, however, that Microsoft
 intends to remove most aspects of Trace at some point after SQL Server 2016.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000089-DB-000064"
-  tag "gid": "V-67359"
-  tag "rid": "SV-81849r2_rule"
-  tag "stig_id": "SQL4-00-011200"
-  tag "fix_id": "F-73471r1_fix"
-  tag "cci": ["CCI-000169"]
-  tag "nist": ["AU-12 a", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000089-DB-000064'
+  tag "gid": 'V-67359'
+  tag "rid": 'SV-81849r2_rule'
+  tag "stig_id": 'SQL4-00-011200'
+  tag "fix_id": 'F-73471r1_fix'
+  tag "cci": ['CCI-000169']
+  tag "nist": ['AU-12 a', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -65,7 +65,7 @@ From the query prompt:
 SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(#);
 
 The following required event IDs should all be among those listed; if not, this
-is a finding. 
+is a finding.
 
 Any additional events locally defined should also be in the list; if not, this
 is a finding.
@@ -203,14 +203,14 @@ trace; edit it as necessary to capture any additional, locally-defined events.
 The script provided in the supplemental file Audit.sql can be used to create an
 audit; edit it as necessary to capture any additional, locally-defined events."
 
-  REQUIRED_EVENT_ID = %w[
+  REQUIRED_EVENT_ID = %w{
     14 15 16 17 18 20 42 43 46 47 90 102 103 104 105 106 107
     108 109 110 111 112 113 115 116 117 118 128 129 130 131 132
     133 134 135 152 153 162 164 170 171 172 173 175 176 177 178
     180
-  ].freeze
+  }.freeze
 
-  REQUIRED_AUDITS_ACTIONS = %w[
+  REQUIRED_AUDITS_ACTIONS = %w{
     APPLICATION_ROLE_CHANGE_PASSWORD_GROUP
     AUDIT_CHANGE_GROUP
     BACKUP_RESTORE_GROUP
@@ -243,21 +243,21 @@ audit; edit it as necessary to capture any additional, locally-defined events."
     SERVER_STATE_CHANGE_GROUP
     SUCCESSFUL_LOGIN_GROUP
     TRACE_CHANGE_GROUP
-  ].freeze
+  }.freeze
 
-  query_traces = %(
+  query_traces = %{
     SELECT * FROM sys.traces
-  )
-  query_trace_eventinfo = %(
+  }
+  query_trace_eventinfo = %{
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
-  )
+  }
 
-  query_audits = %(
+  query_audits = %{
     SELECT server_specification_id,
            audit_action_name,
            audited_result
     FROM   sys.server_audit_specification_details
-  )
+  }
 
   server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')
