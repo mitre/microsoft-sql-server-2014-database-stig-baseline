@@ -1,4 +1,4 @@
-control "V-67427" do
+control 'V-67427' do
   title "Trace or Audit records must be generated when unsuccessful attempts to
 delete categorized information (e.g., classification levels/security levels)
 occur."
@@ -44,13 +44,13 @@ selecting from a table that does not exist) may not appear at all.
     of information, such as classification or sensitivity level on the target'
   end
 
-  tag "gtitle": "SRG-APP-000502-DB-000349"
-  tag "gid": "V-67427"
-  tag "rid": "SV-81917r2_rule"
-  tag "stig_id": "SQL4-00-037400"
-  tag "fix_id": "F-73541r1_fix"
-  tag "cci": ["CCI-000172"]
-  tag "nist": ["AU-12 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000502-DB-000349'
+  tag "gid": 'V-67427'
+  tag "rid": 'SV-81917r2_rule'
+  tag "stig_id": 'SQL4-00-037400'
+  tag "fix_id": 'F-73541r1_fix'
+  tag "cci": ['CCI-000172']
+  tag "nist": ['AU-12 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -158,21 +158,20 @@ ALTER SERVER AUDIT SPECIFICATION <server_audit_implemented_specification_name> W
 = ON);
 GO"
 
-
-  query_traces = %(
+  query_traces = %{
     SELECT * FROM sys.traces
-  )
-  query_trace_eventinfo = %(
+  }
+  query_trace_eventinfo = %{
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
-  )
+  }
 
-  query_audits = %(
+  query_audits = %{
     SELECT server_specification_id,
            audit_action_name,
            audited_result
     FROM   sys.server_audit_specification_details
     WHERE  audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
-  )
+  }
 
   server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')
@@ -208,7 +207,7 @@ GO"
         found_events = sql_session.query(format(query_trace_eventinfo, trace_id: trace_id)).column('eventid')
         describe "EventsIDs in Trace ID:#{trace_id}" do
           subject { found_events }
-          it { should include '90' }
+          its('to_s') { should match /"82"|"83"|"84"|"85"|"86"|"87"|"88"|"89"|"90"|"91"/ }
           it { should include '162' }
         end
       end

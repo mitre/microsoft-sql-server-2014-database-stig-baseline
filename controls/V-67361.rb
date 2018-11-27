@@ -1,4 +1,4 @@
-control "V-67361" do
+control 'V-67361' do
   title "Where SQL Server Audit is in use at the database level, SQL Server
 must allow only the ISSM (or individuals or roles appointed by the ISSM) to
 select which auditable events are to be audited at the database level."
@@ -8,8 +8,8 @@ or interfere with the auditing of critical events.
 
     Suppression of auditing could permit an adversary to evade detection.
 
-    Misconfigured audits can degrade the system's performance by overwhelming
-the audit log. Misconfigured audits may also make it more difficult to
+    Mis-configured audits can degrade the system's performance by overwhelming
+the audit log. Mis-configured audits may also make it more difficult to
 establish, correlate, and investigate the events relating to an incident or
 identify those responsible for one.
 
@@ -32,13 +32,13 @@ trails.
     the database level, this is not applicable (NA)'
   end
 
-  tag "gtitle": "SRG-APP-000090-DB-000065"
-  tag "gid": "V-67361"
-  tag "rid": "SV-81851r2_rule"
-  tag "stig_id": "SQL4-00-011320"
-  tag "fix_id": "F-73473r1_fix"
-  tag "cci": ["CCI-000171"]
-  tag "nist": ["AU-12 b", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000090-DB-000065'
+  tag "gid": 'V-67361'
+  tag "rid": 'SV-81851r2_rule'
+  tag "stig_id": 'SQL4-00-011320'
+  tag "fix_id": 'F-73473r1_fix'
+  tag "cci": ['CCI-000171']
+  tag "nist": ['AU-12 b', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -111,11 +111,11 @@ to remove CONTROL DATABASE permission from logins that do not need it."
 
   approved_audit_maintainers = attribute('approved_audit_maintainers')
 
-  # The query in checktext is assumes the presence of STIG shema as supplied with
+  # The query in check-text is assumes the presence of STIG schema as supplied with
   # the STIG supplemental. The below query ( partially taken from 2016 MSSQL STIG)
   # will work without STIG supplemental schema.
 
-  query = %(
+  query = %{
     SELECT DPE.PERMISSION_NAME AS 'PERMISSION',
            DPM.NAME            AS 'ROLE MEMBER',
            DPR.NAME            AS 'ROLE NAME'
@@ -128,7 +128,7 @@ to remove CONTROL DATABASE permission from logins that do not need it."
              ON DRM.MEMBER_PRINCIPAL_ID = DPM.PRINCIPAL_ID
     WHERE  DPE.PERMISSION_NAME IN ( 'CONTROL', 'ALTER ANY DATABASE AUDIT' )
     OR DPM.NAME IN ('db_owner')
-  )
+  }
 
   sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),

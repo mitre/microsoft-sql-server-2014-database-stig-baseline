@@ -1,4 +1,4 @@
-control "V-67389" do
+control 'V-67389' do
   title "Database contents must be protected from unauthorized and unintended
 information transfer by enforcement of a data-transfer policy."
   desc  "The purpose of this control is to prevent information, including
@@ -15,13 +15,13 @@ for this process, so copies of sensitive data are not misplaced or left in a
 temporary location without the proper controls.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000243-DB-000128"
-  tag "gid": "V-67389"
-  tag "rid": "SV-81879r1_rule"
-  tag "stig_id": "SQL4-00-021800"
-  tag "fix_id": "F-73501r1_fix"
-  tag "cci": ["CCI-001090"]
-  tag "nist": ["SC-4", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000243-DB-000128'
+  tag "gid": 'V-67389'
+  tag "rid": 'SV-81879r1_rule'
+  tag "stig_id": 'SQL4-00-021800'
+  tag "fix_id": 'F-73501r1_fix'
+  tag "cci": ['CCI-001090']
+  tag "nist": ['SC-4', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false

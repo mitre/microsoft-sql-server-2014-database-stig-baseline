@@ -1,4 +1,4 @@
-control "V-67377" do
+control 'V-67377' do
   title "In the event of a system failure, SQL Server must preserve any
 information necessary to return to operations with least disruption to mission
 processes."
@@ -14,13 +14,13 @@ tested periodically to provide assurance that they can be used for restoring
 the database.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000226-DB-000147"
-  tag "gid": "V-67377"
-  tag "rid": "SV-81867r2_rule"
-  tag "stig_id": "SQL4-00-021210"
-  tag "fix_id": "F-73489r1_fix"
-  tag "cci": ["CCI-001665"]
-  tag "nist": ["SC-24", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000226-DB-000147'
+  tag "gid": 'V-67377'
+  tag "rid": 'SV-81867r2_rule'
+  tag "stig_id": 'SQL4-00-021210'
+  tag "fix_id": 'F-73489r1_fix'
+  tag "cci": ['CCI-001665']
+  tag "nist": ['SC-24', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false

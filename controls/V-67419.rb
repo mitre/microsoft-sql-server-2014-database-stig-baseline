@@ -1,4 +1,4 @@
-control "V-67419" do
+control 'V-67419' do
   title "SQL Server must generate Trace or Audit records when unsuccessful
 attempts to modify privileges/permissions via locally-defined security objects
 occur."
@@ -36,13 +36,13 @@ failures (such as selecting from a table that does not exist) may not appear at
 all.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000495-DB-000329"
-  tag "gid": "V-67419"
-  tag "rid": "SV-81909r2_rule"
-  tag "stig_id": "SQL4-00-036300"
-  tag "fix_id": "F-73533r1_fix"
-  tag "cci": ["CCI-000172"]
-  tag "nist": ["AU-12 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000495-DB-000329'
+  tag "gid": 'V-67419'
+  tag "rid": 'SV-81909r2_rule'
+  tag "stig_id": 'SQL4-00-036300'
+  tag "fix_id": 'F-73533r1_fix'
+  tag "cci": ['CCI-000172']
+  tag "nist": ['AU-12 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -156,21 +156,20 @@ ALTER SERVER AUDIT SPECIFICATION <server_audit_implemented_specification_name> W
 = ON);
 GO"
 
-  query_traces = %(
+  query_traces = %{
     SELECT * FROM sys.traces
-  )
-  query_trace_eventinfo = %(
+  }
+  query_trace_eventinfo = %{
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
-  )
+  }
 
-
-  query_audits = %(
+  query_audits = %{
     SELECT server_specification_id,
            audit_action_name,
            audited_result
     FROM   sys.server_audit_specification_details
     WHERE  audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
-  )
+  }
 
   server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')
@@ -208,7 +207,7 @@ GO"
           subject { found_events }
           it { should include '42' }
           it { should include '43' }
-          it { should include '90' }
+          its('to_s') { should match /"82"|"83"|"84"|"85"|"86"|"87"|"88"|"89"|"90"|"91"/ }
           it { should include '162' }
         end
       end

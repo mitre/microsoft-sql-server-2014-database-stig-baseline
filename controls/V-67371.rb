@@ -1,4 +1,4 @@
-control "V-67371" do
+control 'V-67371' do
   title "Database objects (including but not limited to tables, indexes,
 storage, stored procedures, functions, triggers, links to software external to
 SQL Server, etc.) must be owned by database/DBMS principals authorized for
@@ -14,13 +14,13 @@ actions being taken by unauthorized individuals.
 accounts, these objects may be lost when an account is removed.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000133-DB-000200"
-  tag "gid": "V-67371"
-  tag "rid": "SV-81861r1_rule"
-  tag "stig_id": "SQL4-00-015600"
-  tag "fix_id": "F-73483r1_fix"
-  tag "cci": ["CCI-001499"]
-  tag "nist": ["CM-5 (6)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000133-DB-000200'
+  tag "gid": 'V-67371'
+  tag "rid": 'SV-81861r1_rule'
+  tag "stig_id": 'SQL4-00-015600'
+  tag "fix_id": 'F-73483r1_fix'
+  tag "cci": ['CCI-001499']
+  tag "nist": ['CM-5 (6)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -70,11 +70,11 @@ Caution:  this can break code.  This Fix should be implemented in conjunction
 with corrections to such code.  Test before deploying in production.  Deploy
 during a scheduled maintenance window."
 
-  # The query in checktext is assumes the presence of STIG shema as supplied 
-  # with the STIG supplimental. The below query ( taken from 2016 MSSQL STIG) 
-  # will work without it.
+  # The query in check text is assumes the presence of STIG schema as supplied
+  # with the STIG supplemental. The below query ( taken from 2016 MSSQL STIG)
+  # will work without STIG supplemental schema.
 
-  query = %(
+  query = %{
       ;WITH OBJECTS_CTE
            AS (SELECT O.NAME,
                       O.TYPE_DESC,
@@ -94,7 +94,7 @@ during a scheduled maintenance window."
                      ON CTE.PRINCIPAL_ID = DP.PRINCIPAL_ID
       ORDER  BY DP.NAME,
                 CTE.NAME
-  )
+  }
 
   sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),

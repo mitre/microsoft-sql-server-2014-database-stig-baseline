@@ -1,4 +1,4 @@
-control "V-67877" do
+control 'V-67877' do
   title "SQL Server must protect data at rest and ensure confidentiality and
 integrity of data."
   desc  "This control is intended to address the confidentiality and integrity
@@ -24,13 +24,13 @@ organizational controls.  Each of these should be applied as necessary and
 appropriate.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000231-DB-000154"
-  tag "gid": "V-67877"
-  tag "rid": "SV-82367r3_rule"
-  tag "stig_id": "SQL4-00-021300"
-  tag "fix_id": "F-73993r1_fix"
-  tag "cci": ["CCI-001199"]
-  tag "nist": ["SC-28", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000231-DB-000154'
+  tag "gid": 'V-67877'
+  tag "rid": 'SV-82367r3_rule'
+  tag "stig_id": 'SQL4-00-021300'
+  tag "fix_id": 'F-73993r1_fix'
+  tag "cci": ['CCI-001199']
+  tag "nist": ['SC-28', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -88,27 +88,28 @@ Implement physical security measures, operating system access control lists and
 organizational controls appropriate to the sensitivity level of the data in the
 database(s)."
 
-
-  encrypted_databases = attribute('encrypted_databases')
   data_at_rest_encryption_required = attribute('data_at_rest_encryption_required')
   full_disk_encryption_inplace = attribute('full_disk_encryption_inplace')
 
-  query = %(
-    SELECT
-          d.name AS [Database Name],
-          CASE e.encryption_state
-                WHEN 0 THEN 'No database encryption key present, no encryption'
-                WHEN 1 THEN 'Unencrypted'
-                WHEN 2 THEN 'Encryption in progress'
-                WHEN 3 THEN 'Encrypted'
-                WHEN 4 THEN 'Key change in progress'
-                WHEN 5 THEN 'Decryption in progress'
-                WHEN 6 THEN 'Protection change in progress'
-          END AS [Encryption State]
-    FROM sys.dm_database_encryption_keys e
-    RIGHT JOIN sys.databases d ON DB_NAME(e.database_id) = d.name
-    WHERE d.name IN ('#{encrypted_databases.join("', '")}')
-  )
+  query = %{
+    SELECT     d.NAME AS [Database Name],
+               CASE e.encryption_state
+                          WHEN 0 THEN 'No database encryption key present, no encryption'
+                          WHEN 1 THEN 'Unencrypted'
+                          WHEN 2 THEN 'Encryption in progress'
+                          WHEN 3 THEN 'Encrypted'
+                          WHEN 4 THEN 'Key change in progress'
+                          WHEN 5 THEN 'Decryption in progress'
+                          WHEN 6 THEN 'Protection change in progress'
+               END AS [Encryption State]
+    FROM       sys.dm_database_encryption_keys e
+    RIGHT JOIN sys.databases d
+    ON         Db_name(e.database_id) = d.NAME
+    WHERE      d.NAME NOT IN ('master',
+                              'model',
+                              'msdb')
+    AND        d.NAME IN ('#{attribute('db_name')}')
+  }
 
   sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),
@@ -119,19 +120,14 @@ database(s)."
 
   unless data_at_rest_encryption_required
     impact 0.0
-    desc 'If the application owner and Authorizing Official have
+    desc 'The application owner and Authorizing Official have
     determined that encryption of data at rest is NOT required, this is not a
     finding.'
-
-    describe 'Encryption of data at rest' do
-      subject { data_at_rest_encryption_required }
-      it { should be false }
-    end
   end
 
   if full_disk_encryption_inplace
     impact 0.0
-    desc 'If full-disk encryption is being used, this is not a finding.'
+    desc 'Full-disk encryption is being used, this is not a finding.'
 
     describe 'Encryption of data at rest' do
       subject { full_disk_encryption_inplace }
@@ -139,27 +135,15 @@ database(s)."
     end
   end
 
-  if encrypted_databases.empty?
-    impact 0.0
-    desc 'If no databases are required to encrypted, this is not a finding.'
-
-    describe 'Databases are required to encrypted' do
-      subject { encrypted_databases }
-      it { should be_empty }
-    end
+  describe "Database: #{attribute('db_name')} encryption state" do
+    subject { sql_session.query(query).column('encryption state').uniq }
+    it { should cmp 'Encrypted' }
   end
 
-  unless encrypted_databases.empty?
-    describe 'Databases found from the query' do
-      subject { sql_session.query(query) }
-      it { should_not be_empty }
-    end
-
-    sql_session.query(query).rows.each do |row|
-      describe "Database: #{row['database name']} encryption state" do
-        subject { row['encryption state'] }
-        it { should cmp 'Encrypted'}
-      end
-    end
+  describe 'The following checks must be preformed manually' do
+    skip "The following checks must be preformed manually:
+    Verify that there are physical security measures, operating system access
+    control lists and organizational controls appropriate to the sensitivity level
+    of the data in the database(s). If not, this is a finding."
   end
 end

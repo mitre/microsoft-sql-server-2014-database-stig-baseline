@@ -1,4 +1,4 @@
-control "V-67423" do
+control 'V-67423' do
   title "SQL Server must generate Trace or Audit records when unsuccessful
 accesses to designated objects occur."
   desc  "Without tracking all or selected types of access to all or selected
@@ -24,13 +24,13 @@ an acceptable solution for the time being.  Note, however, that Microsoft
 intends to remove most aspects of Trace at some point after SQL Server 2016.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000507-DB-000357"
-  tag "gid": "V-67423"
-  tag "rid": "SV-81913r3_rule"
-  tag "stig_id": "SQL4-00-038200"
-  tag "fix_id": "F-73537r3_fix"
-  tag "cci": ["CCI-000172"]
-  tag "nist": ["AU-12 c", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000507-DB-000357'
+  tag "gid": 'V-67423'
+  tag "rid": 'SV-81913r3_rule'
+  tag "stig_id": 'SQL4-00-038200'
+  tag "fix_id": 'F-73537r3_fix'
+  tag "cci": ['CCI-000172']
+  tag "nist": ['AU-12 c', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -124,20 +124,20 @@ GO
 ALTER SERVER AUDIT SPECIFICATION <server_audit_implemented_specification_name> WITH (STATE
 = ON);
 GO"
-  query_traces = %(
+  query_traces = %{
     SELECT * FROM sys.traces
-  )
-  query_trace_eventinfo = %(
+  }
+  query_trace_eventinfo = %{
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
-  )
+  }
 
-  query_audits = %(
+  query_audits = %{
     SELECT server_specification_id,
            audit_action_name,
            audited_result
     FROM   sys.server_audit_specification_details
     WHERE  audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
-  )
+  }
 
   server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')
@@ -192,5 +192,3 @@ GO"
     end
   end
 end
-
-

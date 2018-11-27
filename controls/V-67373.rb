@@ -1,4 +1,4 @@
-control "V-67373" do
+control 'V-67373' do
   title "In a database owned by a login not having administrative privileges at
 the instance level, the database property TRUSTWORTHY must be OFF unless
 required and authorized."
@@ -42,13 +42,13 @@ for any other database, the need must be documented and approved.
 TRUSTWORTHY.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000133-DB-000200"
-  tag "gid": "V-67373"
-  tag "rid": "SV-81863r1_rule"
-  tag "stig_id": "SQL4-00-015620"
-  tag "fix_id": "F-73485r1_fix"
-  tag "cci": ["CCI-001499"]
-  tag "nist": ["CM-5 (6)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000133-DB-000200'
+  tag "gid": 'V-67373'
+  tag "rid": 'SV-81863r1_rule'
+  tag "stig_id": 'SQL4-00-015620'
+  tag "fix_id": 'F-73485r1_fix'
+  tag "cci": ['CCI-001499']
+  tag "nist": ['CM-5 (6)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -89,7 +89,7 @@ GO
 ALTER DATABASE <name> SET TRUSTWORTHY OFF;
 GO"
 
-  query = %(
+  query = %{
     SELECT
           DB_NAME(D.database_id) AS [Database],
           SUSER_SNAME(D.owner_sid) AS [Database Owner],
@@ -102,7 +102,7 @@ GO"
           AND DB_NAME(D.database_id) <> 'msdb'
           AND D.is_trustworthy_on = 1;
     GO
-  )
+  }
 
   sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),

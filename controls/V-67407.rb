@@ -1,4 +1,4 @@
-control "V-67407" do
+control 'V-67407' do
   title "Time stamps in database tables, intended for auditing or
 activity-tracking purposes, must include both date and time of day, with a
 minimum granularity of one second."
@@ -48,13 +48,13 @@ meaning of TIMESTAMP.  To avoid confusion, Microsoft recommends using the newer
 name for this data type, ROWVERSION, instead.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000375-DB-000323"
-  tag "gid": "V-67407"
-  tag "rid": "SV-81897r1_rule"
-  tag "stig_id": "SQL4-00-033700"
-  tag "fix_id": "F-73519r1_fix"
-  tag "cci": ["CCI-001889"]
-  tag "nist": ["AU-8 b", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000375-DB-000323'
+  tag "gid": 'V-67407'
+  tag "rid": 'SV-81897r1_rule'
+  tag "stig_id": 'SQL4-00-033700'
+  tag "fix_id": 'F-73519r1_fix'
+  tag "cci": ['CCI-001889']
+  tag "nist": ['AU-8 b', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false

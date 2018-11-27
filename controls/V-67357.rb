@@ -1,4 +1,4 @@
-control "V-67357" do
+control 'V-67357' do
   title "SQL Server must enforce approved authorizations for logical access to
 information and database-level system resources in accordance with applicable
 access control policies."
@@ -32,13 +32,13 @@ gaining or being denied access inappropriately and in conflict with applicable
 policy.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000033-DB-000084"
-  tag "gid": "V-67357"
-  tag "rid": "SV-81847r1_rule"
-  tag "stig_id": "SQL4-00-002000"
-  tag "fix_id": "F-73469r1_fix"
-  tag "cci": ["CCI-000213"]
-  tag "nist": ["AC-3", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000033-DB-000084'
+  tag "gid": 'V-67357'
+  tag "rid": 'SV-81847r1_rule'
+  tag "stig_id": 'SQL4-00-002000'
+  tag "fix_id": 'F-73469r1_fix'
+  tag "cci": ['CCI-000213']
+  tag "nist": ['AC-3', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false

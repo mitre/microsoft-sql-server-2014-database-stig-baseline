@@ -1,4 +1,4 @@
-control "V-67399" do
+control 'V-67399' do
   title "SQL Server must reveal detailed error messages only to the ISSO, ISSM
 (or their designees), SA and DBA."
   desc  "If the DBMS provides too much information in error logs and
@@ -40,13 +40,13 @@ to obtain assurances from the development organization that this issue has been
 addressed and must document what has been discovered.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000267-DB-000163"
-  tag "gid": "V-67399"
-  tag "rid": "SV-81889r2_rule"
-  tag "stig_id": "SQL4-00-022900"
-  tag "fix_id": "F-73511r1_fix"
-  tag "cci": ["CCI-001314"]
-  tag "nist": ["SI-11 b", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000267-DB-000163'
+  tag "gid": 'V-67399'
+  tag "rid": 'SV-81889r2_rule'
+  tag "stig_id": 'SQL4-00-022900'
+  tag "fix_id": 'F-73511r1_fix'
+  tag "cci": ['CCI-001314']
+  tag "nist": ['SI-11 b', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
@@ -70,15 +70,15 @@ Server, for review by authorized personnel.
 Consider enabling trace flag 3625 to mask certain system-level error information
 returned to non-administrative users.
 
-Launch SQL Server Configuration Manager >> Click SQL Services >> Open the 
-instance properties >> Click the Service Parameters tab >> Enter '-T3625' >> 
+Launch SQL Server Configuration Manager >> Click SQL Services >> Open the
+instance properties >> Click the Service Parameters tab >> Enter '-T3625' >>
 Click Add >> Click OK >> Restart SQL instance."
 
-  query = %(
+  query = %{
     DBCC
       TRACESTATUS (3625, -1)
     GO
-    )
+    }
 
   sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),

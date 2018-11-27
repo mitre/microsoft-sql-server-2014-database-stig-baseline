@@ -1,4 +1,4 @@
-control "V-67411" do
+control 'V-67411' do
   title "When invalid inputs are received, SQL Server must behave in a
 predictable and documented manner that reflects organizational and system
 objectives."
@@ -21,13 +21,13 @@ to obtain assurances from the development organization that this issue has been
 addressed and must document what has been discovered.
   "
   impact 0.7
-  tag "gtitle": "SRG-APP-000447-DB-000393"
-  tag "gid": "V-67411"
-  tag "rid": "SV-81901r2_rule"
-  tag "stig_id": "SQL4-00-035200"
-  tag "fix_id": "F-73525r1_fix"
-  tag "cci": ["CCI-002754"]
-  tag "nist": ["SI-10 (3)", "Rev_4"]
+  tag "gtitle": 'SRG-APP-000447-DB-000393'
+  tag "gid": 'V-67411'
+  tag "rid": 'SV-81901r2_rule'
+  tag "stig_id": 'SQL4-00-035200'
+  tag "fix_id": 'F-73525r1_fix'
+  tag "cci": ['CCI-002754']
+  tag "nist": ['SI-10 (3)', 'Rev_4']
   tag "false_negatives": nil
   tag "false_positives": nil
   tag "documentable": false
