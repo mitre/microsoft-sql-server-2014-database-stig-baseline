@@ -1,130 +1,41 @@
-# microsoft_sql_2014_database_stig_baseline  
+# microsoft-sql-server-2014-database-stig-baseline  
 
-InSpec profile testing secure configuration of Microsoft SQL Server Database 2014.
+InSpec Profile to validate the secure configuration of Microsoft SQL Server 2014 Database, against [DISA](https://iase.disa.mil/stigs/)'s **Microsoft SQL Server 2014 Database Security Technical Implementation Guide (STIG) Version 1, Release 6**.
 
-## Description  
+## Getting Started  
+It is intended and recommended that InSpec run this profile from a __"runner"__ host (such as a DevOps orchestration server, an administrative management system, or a developer's workstation/laptop) against the target remotely over __winrm__.
 
-This InSpec compliance profile is a collection of automated tests for secure configuration of MSSQL 2014 DB.
+__For the best security of the runner, always install on the runner the _latest version_ of InSpec and supporting Ruby language components.__ 
 
-InSpec is an open-source run-time framework and rule language used to specify compliance, security, and policy requirements for testing any node in your infrastructure.
+Latest versions and installation options are available at the [InSpec](http://inspec.io/) site.
 
-## Versioning and State of Development
-This project uses the [Semantic Versioning Policy](https://semver.org/). 
+## Running This Profile
 
-### Branches
-The master branch contains the latest version of the software leading up to a new release. 
+    inspec exec https://github.com/mitre/microsoft-sql-server-2014-database-stig-baseline/archive/master.tar.gz -t winrm://<hostip> --user '<admin-account>' --password=<password> --reporter cli json:<filename>.json
 
-Other branches contain feature-specific updates. 
+Runs this profile over winrm to the host at IP address <hostip> as a privileged user account (i.e., an account with administrative privileges), reporting results to both the command line interface (cli) and to a machine-readable JSON file. 
+    
+The following is an example of using this command. 
 
-### Tags
-Tags indicate official releases of the project.
+    inspec exec https://github.com/mitre/microsoft-sql-server-2014-database-stig-baseline/archive/master.tar.gz -t winrm://$winhostip --user 'Administrator' --password=Pa55w0rd --reporter cli json:mssql-database-results.json
 
-Please note 0.x releases are works in progress (WIP) and may change at any time.   
+## Viewing the JSON Results
 
-## Requirements  
+The JSON results output file can be loaded into __[heimdall-lite](https://mitre.github.io/heimdall-lite/)__ for a user-interactive, graphical view of the InSpec results. 
 
-- [ruby](https://www.ruby-lang.org/en/) version 2.4  or greater
-- [InSpec](http://inspec.io/) version 2.1  or greater
-    - Install via ruby gem: `gem install inspec`
+The JSON InSpec results file may also be loaded into a __full heimdall server__, allowing for additional functionality such as to store and compare multiple profile runs.
 
-## Usage
-InSpec makes it easy to run tests wherever you need. More options listed here: [InSpec cli](http://inspec.io/docs/reference/cli/)
+## Authors
+- Rony Xavier
 
-### Run with remote profile:  
-
-You may choose to run the profile via a remote url, this has the advantage of always being up to date.
-The disadvantage is you may wish to modify controls, which is only possible when downloaded.
-Also, the remote profile is unintuitive for passing in attributes, which modify the default values of the profile.
-``` bash
-inspec exec https://github.com/aaronlippold/microsoft_sql_2014_database_stig_baseline/archive/master.tar.gz
-```
-Another option is to download the profile then run it, this allows you to edit specific instructions and view the profile code.
-``` bash
-# Clone Inspec Profile
-$ git clone https://github.com/aaronlippold/microsoft_sql_2014_database_stig_baseline.git
-
-# Run profile locally (assuming you have not changed directories since cloning)
-# This will display compliance level at the prompt, and generate a JSON file 
-# for export called output.json
-$ inspec exec microsoft_sql_2014_database_stig_baseline --reporter cli json:output.json
-
-# Run profile with custom settings defined in attributes.yml against the target 
-# server example.com. 
-$inspec exec microsoft_sql_2014_server_stig_baseline -t winrm://$winhostip --user 'Administrator' --password=Pa55w0rd --attrs attributes.yml --reporter cli json:output.json
-
-# Run profile with: custom attributes, ssh keyed into a custom target, and sudo.
-$inspec exec microsoft_sql_2014_server_stig_baseline -t winrm://$winhostip --user 'Administrator' --password=Pa55w0rd --attrs attributes.yml --sudo --attrs attributes.yml --reporter cli json:output.json
-
-```
-
-
-## Contributors + Kudos  
+## Special Thanks
 
 - Aaron Lippold
 - The MITRE InSpec Team
 
-## License and Author  
+## License 
 
-### Authors  
-
-- Author:: Rony Xavier (rx294@nyu.edu)
-
-### Progress report  
-
-|Control|Auto/Manual|Describe|in-progress|Review-RDY|Reviewed|Tested|Automated Unit Tests|
-|--------|----------|----------|----------|----------|----------|----------|------------|
-|V-67399|   auto   |yes|   |yes| | | |
-|V-67441|   auto   |yes|   |yes| | | |
-|V-67389|  manual  |yes|   |yes| | | |
-|V-67415|   auto   |yes|   |yes| | | |
-|V-67421|   auto   |yes|   |yes| | | |
-|V-67431|   auto   |yes|   |yes| | | |
-|V-67405|  manual  |yes|   |yes| | | |
-|V-67425|   auto   |yes|   |yes| | | |
-|V-67411|  manual  |yes|   |yes| | | |
-|V-67401|  manual  |yes|   |yes| | | |
-|V-67435|   auto   |yes|   |yes| | | |
-|V-67393|  manual  |yes|   |yes| | | |
-|V-67383|   auto   |yes|   |yes| | | |
-|V-67397|   auto   |yes|   |yes| | | |
-|V-67365|   auto   |yes|   |yes| | | |
-|V-67375|   auto   |yes|   |yes| | | |
-|V-67361|   auto   |yes|   |yes| | | |
-|V-67371|   auto   |yes|   |yes| | | |
-|V-67395|  manual  |yes|   |yes| | | |
-|V-67385|   auto   |yes|   |yes| | | |
-|V-67391|  manual  |yes|   |yes| | | |
-|V-67381|  manual  |yes|   |yes| | | |
-|V-67419|   auto   |yes|   |yes| | | |
-|V-67357|  manual  |yes|   |yes| | | |
-|V-67373|   auto   |yes|   |yes| | | |
-|V-67409|   auto   |yes|   |yes| | | |
-|V-67429|   auto   |yes|   |yes| | | |
-|V-67367|   auto   |yes|   |yes| | | |
-|V-67377|  manual  |yes|   |yes| | | |
-|V-67439|   auto   |yes|   |yes| | | |
-|V-67877|   auto   |yes|   |yes| | | |
-|V-67443|   auto   |yes|   |yes| | | |
-|V-67369|   auto   |yes|   |yes| | | |
-|V-67427|   auto   |yes|   |yes| | | |
-|V-67413|   auto   |yes|   |yes| | | |
-|V-67403|  manual  |yes|   |yes| | | |
-|V-67437|   auto   |yes|   |yes| | | |
-|V-67359|   auto   |yes|   |yes| | | |
-|V-67417|   auto   |yes|   |yes| | | |
-|V-67423|   auto   |yes|   |yes| | | |
-|V-67433|   auto   |yes|   |yes| | | |
-|V-67407|  manual  |yes|   |yes| | | |
-
- 
-Legend
-- Describe: Control has been evaluated and categorized as candidate for automated tests. Describe block has been written.
-- Auto/Manual: Control has been evaluated and categorized as candidate for type that needs a manual review. Describe block has been written.
-- Awaiting Review: Control is ready for peer review.
-- in-progress: Initial evaluation has been completed, describe statements are being worked on.
-- Reviewed: Control has been peer reviewed.
-- Tested: Control has been peer reviewed and improved ( if needed ) and the improvements have been peer-tested.
-- Automated Unit Tested: Automation of unit testing has been developed to the final point where creation, destruction and configuration of the resources has been automated fully.
+This project is licensed under the terms of the Apache license 2.0 (apache-2.0).
 
 ### NOTICE
 
@@ -134,7 +45,6 @@ Approved for Public Release; Distribution Unlimited. Case Number 18-3678.
 
 ### NOTICE
 MITRE hereby grants express written permission to use, reproduce, distribute, modify, and otherwise leverage this software to the extent permitted by the licensed terms provided in the LICENSE.md file included with this project.
-
 
 ### NOTICE  
 
