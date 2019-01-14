@@ -10,7 +10,7 @@ To help protect sensitive data from unauthorized access by DBAs, mitigations
 may be in order. Mitigations may include automatic alerts or other audit events
 when the Database Master Key is accessed outside of the application or by a DBA
 account."
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000231-DB-000154'
   tag "gid": 'V-67381'
   tag "rid": 'SV-81871r1_rule'

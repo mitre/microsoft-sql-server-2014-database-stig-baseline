@@ -13,7 +13,7 @@ actions being taken by unauthorized individuals.
     Conversely, if critical tables or other objects rely on unauthorized owner
 accounts, these objects may be lost when an account is removed.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000133-DB-000200'
   tag "gid": 'V-67371'
   tag "rid": 'SV-81861r1_rule'

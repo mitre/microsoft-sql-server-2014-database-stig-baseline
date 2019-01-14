@@ -23,7 +23,7 @@ objects.  The [Succeeded] column in the audit output indicates the success or
 failure of the attempted action.  Be aware, however, that it may report True in
 some cases where one would intuitively expect False.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000501-DB-000337'
   tag "gid": 'V-67431'
   tag "rid": 'SV-81921r3_rule'

@@ -13,7 +13,7 @@ of the system.
 tested periodically to provide assurance that they can be used for restoring
 the database.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000226-DB-000147'
   tag "gid": 'V-67377'
   tag "rid": 'SV-81867r2_rule'

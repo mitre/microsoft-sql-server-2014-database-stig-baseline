@@ -20,7 +20,7 @@ data structures (e.g., files, records, or fields).
 also influenced by the physical measures taken to secure the equipment and
 media on which the information resides.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000428-DB-000386'
   tag "gid": 'V-67409'
   tag "rid": 'SV-81899r1_rule'

@@ -23,7 +23,7 @@ intends to remove most aspects of Trace at some point after SQL Server 2016.
     Trace does not offer tracking of SELECT operations, so where this is
 required it must be implemented at the application level.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000507-DB-000356'
   tag "gid": 'V-67425'
   tag "rid": 'SV-81915r3_rule'

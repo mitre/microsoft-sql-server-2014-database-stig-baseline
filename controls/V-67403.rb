@@ -31,7 +31,7 @@ also exist. Custom application code is also a viable way to implement a
 solution.
   "
   if attribute('security_labeling_required')
-    impact 0.7
+    impact 0.5
   else
     impact 0.0
     desc 'Security labeling is stated as `not required` in the attributes file,

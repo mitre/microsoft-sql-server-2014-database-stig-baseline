@@ -25,7 +25,7 @@ trails.
   "
 
   if attribute('server_audit_at_database_level_required')
-    impact 0.7
+    impact 0.5
   else
     impact 0.0
     desc 'Inspec attributes has specified that SQL Server Audit is not in use at
