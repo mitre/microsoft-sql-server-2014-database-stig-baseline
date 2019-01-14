@@ -14,7 +14,7 @@ copying data from production. It is important that specific procedures exist
 for this process, so copies of sensitive data are not misplaced or left in a
 temporary location without the proper controls.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000243-DB-000128'
   tag "gid": 'V-67389'
   tag "rid": 'SV-81879r1_rule'

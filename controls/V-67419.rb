@@ -35,7 +35,7 @@ contains an invalid expression.  Some other actions that one would consider
 failures (such as selecting from a table that does not exist) may not appear at
 all.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000495-DB-000329'
   tag "gid": 'V-67419'
   tag "rid": 'SV-81909r2_rule'

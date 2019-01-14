@@ -41,7 +41,7 @@ for any other database, the need must be documented and approved.
     The system database [msdb] is an exception: it is required to be
 TRUSTWORTHY.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000133-DB-000200'
   tag "gid": 'V-67373'
   tag "rid": 'SV-81863r1_rule'

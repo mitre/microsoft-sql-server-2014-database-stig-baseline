@@ -24,7 +24,7 @@ for audit purposes.
   "
 
   if attribute('server_trace_or_audit_required')
-    impact 0.7
+    impact 0.5
   else
     impact 0.0
     desc 'Inspec attributes has specified that is not required to track categories

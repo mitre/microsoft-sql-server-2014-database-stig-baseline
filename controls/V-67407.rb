@@ -47,7 +47,7 @@ correspond to calendar and clock time. This requirement does not refer to that
 meaning of TIMESTAMP.  To avoid confusion, Microsoft recommends using the newer
 name for this data type, ROWVERSION, instead.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000375-DB-000323'
   tag "gid": 'V-67407'
   tag "rid": 'SV-81897r1_rule'

@@ -27,7 +27,7 @@ reasons, the instance may be using SQL Server Trace for auditing, which remains
 an acceptable solution for the time being.  Note, however, that Microsoft
 intends to remove most aspects of Trace at some point after SQL Server 2016.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000089-DB-000064'
   tag "gid": 'V-67359'
   tag "rid": 'SV-81849r2_rule'

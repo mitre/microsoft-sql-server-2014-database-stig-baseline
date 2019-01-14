@@ -31,7 +31,7 @@ other applications in the information system. This may result in users either
 gaining or being denied access inappropriately and in conflict with applicable
 policy.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000033-DB-000084'
   tag "gid": 'V-67357'
   tag "rid": 'SV-81847r1_rule'

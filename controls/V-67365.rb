@@ -25,7 +25,7 @@ including upgrades and modifications.
 configuration, such as Functions, can lead to unauthorized or compromised
 installations.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000133-DB-000179'
   tag "gid": 'V-67365'
   tag "rid": 'SV-81855r2_rule'

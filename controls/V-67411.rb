@@ -20,7 +20,7 @@ of databases that they must not be ignored. At a minimum, the DBA must attempt
 to obtain assurances from the development organization that this issue has been
 addressed and must document what has been discovered.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000447-DB-000393'
   tag "gid": 'V-67411'
   tag "rid": 'SV-81901r2_rule'

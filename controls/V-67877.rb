@@ -23,7 +23,7 @@ where the storage devices reside, operating system file permissions, and
 organizational controls.  Each of these should be applied as necessary and
 appropriate.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000231-DB-000154'
   tag "gid": 'V-67877'
   tag "rid": 'SV-82367r3_rule'

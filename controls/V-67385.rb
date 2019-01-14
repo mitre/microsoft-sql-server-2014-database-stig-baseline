@@ -8,7 +8,7 @@ compromised the data could be disclosed to unauthorized personnel.
     The database master key is exempt, as a password must be supplied when
 creating it.
   "
-  impact 0.7
+  impact 0.5
   tag "gtitle": 'SRG-APP-000231-DB-000154'
   tag "gid": 'V-67385'
   tag "rid": 'SV-81875r2_rule'
