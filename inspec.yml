@@ -1,39 +1,45 @@
 name: microsoft-sql-server-2014-database-stig-baseline
-title: MS SQL Server 2014 Database Security Technical Implementation Guide
+title: microsoft-sql-server-2014-database-stig-baseline
 maintainer: The MITRE Corporation
 copyright: (c) 2018 The MITRE Corporation
 copyright_email: inspec@mitre.org
 license: Apache-2.0
-summary: 'This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via e-mail to the following address: disa.stig_spt@mail.mil.'
-version: 0.1.0
+summary: "Inspec Validation Profile for Microsoft SQL Server 2014 Database STIG"
+version: 1.6.0
 inspec_version: ">= 4.0"
 
-attributes:
+inputs:
   - name: user
     description: 'username MSSQL DB Server'
-    default: Null
+    value: Null
+    sensitive: true
 
   - name: password
     description: 'password MSSQL DB Server'
-    default: Null
+    value: Null
+    sensitive: true
 
   - name: host
     description: 'hostname MSSQL DB Server'
-    default: Null
+    value: Null
+    sensitive: true
 
   - name: instance
     description: 'instance name MSSQL DB Server'
-    default: Null
+    value: Null
+    sensitive: true
 
   - name: port
     description: 'port MSSQL DB Server'
     type: numeric
-    default: 49789
+    value: 49789
+    sensitive: true
 
   - name: db_name
     description: 'name of the specific DB being evaluated within the MSSQL server'
     type: string
-    default: 'master'
+    value: 'master'
+    sensitive: true
 
   - name: server_trace_or_audit_required
     description: 'Changes in categorized information must be tracked. Without an 
@@ -42,62 +48,62 @@ attributes:
     categories of information, such as classification or sensitivity level.  
     If it is not, such controls is not applicable (NA).'
     type: boolean
-    default: true
+    value: true
 
   - name: server_trace_implemented
     description: 'Set to true If SQL Server Trace is in use for audit purposes'
     type: boolean
-    default: true
+    value: true
 
   - name: server_audit_implemented
     description: 'Set to true If SQL Server Audit is in use for audit purposes'
     type: boolean
-    default: true
+    value: true
 
   - name: server_audit_at_database_level_required
     description: 'Specify if  SQL Server Audit is not in use at the database level'
     type: boolean
-    default: true
+    value: true
 
   - name: approved_audit_maintainers
     description: 'User with `ALTER ANY DATABASE AUDIT` or `CONTROL` permission'
     type: array
-    default: []
+    value: []
 
   - name: track_stored_procedures_changes_job_name
     description: 'name of the timed job that automatically checks all system and 
     user-defined procedures for being modified'
     type: string
-    default: 'STIG_database_object_tracking'
+    value: 'STIG_database_object_tracking'
 
   - name: track_triggers_changes_job_name
     description: 'name of the timed job that automatically checks all system and 
     user-defined triggers for being modified'
     type: string
-    default: 'STIG_database_object_tracking'
+    value: 'STIG_database_object_tracking'
 
   - name: track_functions_changes_job_name 
     description: 'name of the timed job that automatically checks all system and 
     user-defined functions for being modified'
     type: string
-    default: 'STIG_database_object_tracking'
+    value: 'STIG_database_object_tracking'
 
   - name: authorized_principals
     description: 'identify SQL Server accounts authorized to own database objects'
     type: array
-    default: []
+    value: []
 
   - name: data_at_rest_encryption_required
     description: 'Set to true if data at rest encryption is required'
     type: boolean
-    default: true
+    value: true
 
   - name: full_disk_encryption_inplace
     description: 'Set to true if full disk encryption is in place'
     type: boolean
-    default: false
+    value: false
 
   - name: security_labeling_required
     description: 'Set to true if security labeling is required'
     type: boolean
-    default: true
+    value: true
