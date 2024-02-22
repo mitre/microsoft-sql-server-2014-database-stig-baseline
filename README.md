@@ -1,6 +1,8 @@
 # microsoft-sql-server-2014-database-stig-baseline  
 
-InSpec profile to validate the secure configuration of Microsoft SQL Server 2014 Database, against [DISA](https://iase.disa.mil/stigs/)'s Microsoft SQL Server 2014 Database Security Technical Implementation Guide (STIG) Version 1, Release 6.
+InSpec profile to validate the secure configuration of Microsoft SQL Server 2014 *Database, against [DISA](https://iase.disa.mil/stigs/)'s Microsoft SQL Server 2014 Database Security Technical Implementation Guide (STIG) Version 1, Release 6.
+
+\*In the Microsoft SQL Server domain, a `database` (often abbreviated as DB) is a logical collection of data stored in files and managed not by the operating system alone but by the Database Management System (DBMS). Multiple databases may exist under one DBMS instance. There are always at least four system databases supporting an instance, and there will normally be one database (possibly more) supporting an application.
 
 ## Getting Started  
 It is intended and recommended that InSpec run this profile from a __"runner"__ host (such as a DevOps orchestration server, an administrative management system, or a developer's workstation/laptop) against the target remotely over __winrm__.
