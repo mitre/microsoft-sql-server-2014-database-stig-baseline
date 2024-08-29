@@ -2,7 +2,7 @@ name: microsoft-sql-server-2014-database-stig-baseline
 title: microsoft-sql-server-2014-database-stig-baseline
 maintainer: The MITRE Corporation
 copyright: (c) 2018 The MITRE Corporation
-copyright_email: inspec@mitre.org
+copyright_email: saf@groups.mitre.org
 license: Apache-2.0
 summary: "Inspec Validation Profile for Microsoft SQL Server 2014 Database STIG"
 version: 1.6.0
