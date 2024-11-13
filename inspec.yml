@@ -1,108 +1,171 @@
-name: microsoft-sql-server-2014-database-stig-baseline
-title: microsoft-sql-server-2014-database-stig-baseline
-maintainer: The MITRE Corporation
-copyright: (c) 2018 The MITRE Corporation
+name: ms-sql-server-2014-database-stig-baseline
+title: MS SQL Server 2014 Database Security Technical Implementation Guide
+maintainer: MITRE SAF Team
+copyright: MITRE
 copyright_email: saf@groups.mitre.org
 license: Apache-2.0
-summary: "Inspec Validation Profile for Microsoft SQL Server 2014 Database STIG"
-version: 1.6.0
-inspec_version: ">= 4.0"
+summary: InSpec profile aligned to DISA STIG for MS SQL Server 2014 Database
+  Security Technical Implementation Guide
+description: null
+version: 1.7.0
+supports: []
+depends: []
+inspec_version: "~>6.0"
 
 inputs:
+  # SV-213765, SV-213766, SV-213767, SV-213768, SV-213769
+  # SV-213770, SV-213771, SV-213772, SV-213774, SV-213777
+  # SV-213778, SV-213779, SV-213780, SV-213781, SV-213788
+  # SV-213791, SV-213792, SV-213793, SV-213794, SV-213795
+  # SV-213796, SV-213797, SV-213798, SV-213799, SV-213800
+  # SV-213801, SV-213802, SV-213803, SV-213804, SV-213805
   - name: user
     description: 'username MSSQL DB Server'
     value: Null
     sensitive: true
 
+  # SV-213765, SV-213766, SV-213767, SV-213768, SV-213769
+  # SV-213770, SV-213771, SV-213772, SV-213774, SV-213777
+  # SV-213778, SV-213779, SV-213780, SV-213781, SV-213788
+  # SV-213791, SV-213792, SV-213793, SV-213794, SV-213795
+  # SV-213796, SV-213797, SV-213798, SV-213799, SV-213800
+  # SV-213801, SV-213802, SV-213803, SV-213804, SV-213805
   - name: password
     description: 'password MSSQL DB Server'
     value: Null
     sensitive: true
 
+  # SV-213765, SV-213766, SV-213767, SV-213768, SV-213769
+  # SV-213770, SV-213771, SV-213772, SV-213774, SV-213777
+  # SV-213778, SV-213779, SV-213780, SV-213781, SV-213788
+  # SV-213791, SV-213792, SV-213793, SV-213794, SV-213795
+  # SV-213796, SV-213797, SV-213798, SV-213799, SV-213800
+  # SV-213801, SV-213802, SV-213803, SV-213804, SV-213805
   - name: host
     description: 'hostname MSSQL DB Server'
     value: Null
     sensitive: true
 
+  # SV-213765, SV-213766, SV-213767, SV-213768, SV-213769
+  # SV-213770, SV-213771, SV-213772, SV-213774, SV-213777
+  # SV-213778, SV-213779, SV-213780, SV-213781, SV-213788
+  # SV-213791, SV-213792, SV-213793, SV-213794, SV-213795
+  # SV-213796, SV-213797, SV-213798, SV-213799, SV-213800
+  # SV-213801, SV-213802, SV-213803, SV-213804, SV-213805
   - name: instance
     description: 'instance name MSSQL DB Server'
     value: Null
     sensitive: true
 
+  # SV-213765, SV-213766, SV-213767, SV-213768, SV-213769
+  # SV-213770, SV-213771, SV-213772, SV-213774, SV-213777
+  # SV-213778, SV-213779, SV-213780, SV-213781, SV-213788
+  # SV-213791, SV-213792, SV-213793, SV-213794, SV-213795
+  # SV-213796, SV-213797, SV-213798, SV-213799, SV-213800
+  # SV-213801, SV-213802, SV-213803, SV-213804, SV-213805
   - name: port
     description: 'port MSSQL DB Server'
     type: numeric
     value: 49789
     sensitive: true
 
+  # SV-213765, SV-213766, SV-213767, SV-213768, SV-213769
+  # SV-213770, SV-213771, SV-213772, SV-213774, SV-213777
+  # SV-213778, SV-213779, SV-213780, SV-213781, SV-213788
+  # SV-213791, SV-213792, SV-213793, SV-213794, SV-213795
+  # SV-213796, SV-213797, SV-213798, SV-213799, SV-213800
+  # SV-213801, SV-213802, SV-213803, SV-213804, SV-213805
   - name: db_name
     description: 'name of the specific DB being evaluated within the MSSQL server'
     type: string
     value: 'master'
     sensitive: true
 
+  # SV-213790, SV-213791, SV-213796, SV-213797, SV-213798
+  # SV-213799, SV-213802, SV-213803
   - name: server_trace_or_audit_required
-    description: 'Changes in categorized information must be tracked. Without an 
-    audit trail, unauthorized access to protected data could go undetected.
-    Review the system documentation to determine whether it is required to track
-    categories of information, such as classification or sensitivity level.  
-    If it is not, such controls is not applicable (NA).'
+    description: |
+      Changes in categorized information must be tracked. Without an
+      audit trail, unauthorized access to protected data could go undetected.
+      Review the system documentation to determine whether it is required to track
+      categories of information, such as classification or sensitivity level.  
+      If it is not, such controls is not applicable (NA).
     type: boolean
     value: true
 
+  # SV-213765, SV-213790, SV-213791, SV-213792, SV-213793
+  # SV-213794, SV-213795, SV-213796, SV-213797, SV-213798
+  # SV-213799, SV-213800, SV-213801, SV-213802, SV-213803
+  # SV-213804, SV-213805
   - name: server_trace_implemented
     description: 'Set to true If SQL Server Trace is in use for audit purposes'
     type: boolean
     value: true
 
+  # SV-213765, SV-213790, SV-213791, SV-213792, SV-213793
+  # SV-213794, SV-213795, SV-213796, SV-213797, SV-213798
+  # SV-213799, SV-213800, SV-213801, SV-213802, SV-213803
+  # SV-213804, SV-213805
   - name: server_audit_implemented
     description: 'Set to true If SQL Server Audit is in use for audit purposes'
     type: boolean
     value: true
 
+  # SV-213766
   - name: server_audit_at_database_level_required
     description: 'Specify if  SQL Server Audit is not in use at the database level'
     type: boolean
     value: true
 
+  # SV-213766
   - name: approved_audit_maintainers
     description: 'User with `ALTER ANY DATABASE AUDIT` or `CONTROL` permission'
     type: array
     value: []
 
+  # SV-213769
   - name: track_stored_procedures_changes_job_name
-    description: 'name of the timed job that automatically checks all system and 
-    user-defined procedures for being modified'
+    description: |
+      name of the timed job that automatically checks all system and 
+      user-defined procedures for being modified'
     type: string
     value: 'STIG_database_object_tracking'
 
+  # SV-213768
   - name: track_triggers_changes_job_name
-    description: 'name of the timed job that automatically checks all system and 
-    user-defined triggers for being modified'
+    description: |
+      name of the timed job that automatically checks all system and 
+      user-defined triggers for being modified'
     type: string
     value: 'STIG_database_object_tracking'
 
+  # SV-213767
   - name: track_functions_changes_job_name 
-    description: 'name of the timed job that automatically checks all system and 
-    user-defined functions for being modified'
+    description: |
+      name of the timed job that automatically checks all system and 
+      user-defined functions for being modified'
     type: string
     value: 'STIG_database_object_tracking'
 
+  # SV-213770
   - name: authorized_principals
     description: 'identify SQL Server accounts authorized to own database objects'
     type: array
     value: []
 
+  # SV-213774, SV-213788
   - name: data_at_rest_encryption_required
     description: 'Set to true if data at rest encryption is required'
     type: boolean
     value: true
 
+  # SV-213774
   - name: full_disk_encryption_inplace
     description: 'Set to true if full disk encryption is in place'
     type: boolean
     value: false
 
+  # SV-213784, SV-213785, SV-213786
   - name: security_labeling_required
     description: 'Set to true if security labeling is required'
     type: boolean
