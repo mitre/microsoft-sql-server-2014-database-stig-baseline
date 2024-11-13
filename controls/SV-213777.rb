@@ -35,12 +35,12 @@ If database error messages contain PII data, sensitive business data, or informa
     GO
     }
 
-  sql_session = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              db_name: attribute('db_name'))
+  sql_session = mssql_session(user: input('user'),
+                              password: input('password'),
+                              host: input('host'),
+                              instance: input('instance'),
+                              port: input('port'),
+                              db_name: input('db_name'))
 
   describe 'TRACEFLAG 3625' do
     subject { sql_session.query(query).rows[0] }

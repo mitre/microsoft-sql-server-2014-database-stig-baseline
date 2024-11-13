@@ -40,7 +40,7 @@ Where column encryption is required, deploy the necessary stack of certificates 
   tag cci: ['CCI-002475']
   tag nist: ['SC-28 (1)']
 
-  data_at_rest_encryption_required = attribute('data_at_rest_encryption_required')
+  data_at_rest_encryption_required = input('data_at_rest_encryption_required')
 
   query = %{
     SELECT
@@ -56,15 +56,15 @@ Where column encryption is required, deploy the necessary stack of certificates 
           END AS [Encryption State]
     FROM sys.dm_database_encryption_keys e
     RIGHT JOIN sys.databases d ON DB_NAME(e.database_id) = d.name
-    WHERE d.name IN ('#{attribute('db_name')}')
+    WHERE d.name IN ('#{input('db_name')}')
   }
 
-  sql_session = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              db_name: attribute('db_name'))
+  sql_session = mssql_session(user: input('user'),
+                              password: input('password'),
+                              host: input('host'),
+                              instance: input('instance'),
+                              port: input('port'),
+                              db_name: input('db_name'))
 
   unless data_at_rest_encryption_required
     impact 0.0
@@ -73,7 +73,7 @@ Where column encryption is required, deploy the necessary stack of certificates 
     finding.'
   end
 
-  describe "Database: #{attribute('db_name')} encryption state" do
+  describe "Database: #{input('db_name')} encryption state" do
     subject { sql_session.query(query).column('encryption state').uniq }
     it { should cmp 'Encrypted' }
   end

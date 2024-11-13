@@ -38,14 +38,14 @@ If such a job, or an alternative method of monitoring stored procedures for modi
     WHERE  [name] = '%<job_name>s'
   )
 
-  job_name = attribute('track_stored_procedures_changes_job_name')
+  job_name = input('track_stored_procedures_changes_job_name')
 
-  sql_session = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              db_name: attribute('db_name'))
+  sql_session = mssql_session(user: input('user'),
+                              password: input('password'),
+                              host: input('host'),
+                              instance: input('instance'),
+                              port: input('port'),
+                              db_name: input('db_name'))
 
   describe "Scheduled job: #{job_name} enabled status" do
     subject { sql_session.query(format(query, job_name: job_name)).column('enabled') }

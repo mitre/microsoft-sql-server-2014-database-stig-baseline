@@ -39,15 +39,15 @@ If the additional requirements are not in place, this is a finding.'
     WHERE  is_master_key_encrypted_by_server = 1
            AND owner_sid <> 1
            AND state = 0
-           AND name = '#{attribute('db_name')}';
+           AND name = '#{input('db_name')}';
   )
 
-  sql_session = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              db_name: attribute('db_name'))
+  sql_session = mssql_session(user: input('user'),
+                              password: input('password'),
+                              host: input('host'),
+                              instance: input('instance'),
+                              port: input('port'),
+                              db_name: input('db_name'))
 
   results = sql_session.query(query)
 

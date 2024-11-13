@@ -27,7 +27,7 @@ If security labeling requirements have been specified, but the security labeling
   tag cci: ['CCI-002263']
   tag nist: ['AC-16 a']
 
-  if attribute('security_labeling_required')
+  if input('security_labeling_required')
     impact 0.5
   else
     impact 0.0

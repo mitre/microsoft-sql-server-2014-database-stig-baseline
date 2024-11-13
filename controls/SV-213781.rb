@@ -58,15 +58,15 @@ The symmetric key must specify a certificate or asymmetric key for encryption.'
         BY s.name, k.crypt_type_desc
     }
 
-  sql_session = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              db_name: attribute('db_name'))
+  sql_session = mssql_session(user: input('user'),
+                              password: input('password'),
+                              host: input('host'),
+                              instance: input('instance'),
+                              port: input('port'),
+                              db_name: input('db_name'))
 
   unless sql_session.query(query).column('name').empty?
-    describe "List of Symmetric keys in DB: #{attribute('db_name')} not encrypted\
+    describe "List of Symmetric keys in DB: #{input('db_name')} not encrypted\
     by DoD certificate" do
       subject { sql_session.query(query).column('name') }
       it { should be_empty }

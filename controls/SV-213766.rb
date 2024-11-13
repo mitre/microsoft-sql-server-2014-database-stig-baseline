@@ -67,7 +67,7 @@ Use REVOKE and/or DENY and/or ALTER SERVER ROLE ... DROP MEMBER ... statements t
   tag cci: ['CCI-000171']
   tag nist: ['AU-12 b']
 
-  if attribute('server_audit_at_database_level_required')
+  if input('server_audit_at_database_level_required')
     impact 0.5
   else
     impact 0.0
@@ -75,7 +75,7 @@ Use REVOKE and/or DENY and/or ALTER SERVER ROLE ... DROP MEMBER ... statements t
     the database level, this is not applicable (NA)'
   end
 
-  approved_audit_maintainers = attribute('approved_audit_maintainers')
+  approved_audit_maintainers = input('approved_audit_maintainers')
 
   # The query in check-text is assumes the presence of STIG schema as supplied with
   # the STIG supplemental. The below query ( partially taken from 2016 MSSQL STIG)
@@ -96,12 +96,12 @@ Use REVOKE and/or DENY and/or ALTER SERVER ROLE ... DROP MEMBER ... statements t
     OR DPM.NAME IN ('db_owner')
   }
 
-  sql_session = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              db_name: attribute('db_name'))
+  sql_session = mssql_session(user: input('user'),
+                              password: input('password'),
+                              host: input('host'),
+                              instance: input('instance'),
+                              port: input('port'),
+                              db_name: input('db_name'))
 
   describe 'List of approved audit maintainers' do
     subject { sql_session.query(query).column('role member').uniq }

@@ -54,8 +54,8 @@ Implement physical security measures, operating system access control lists and 
   tag cci: ['CCI-001199']
   tag nist: ['SC-28']
 
-  data_at_rest_encryption_required = attribute('data_at_rest_encryption_required')
-  full_disk_encryption_inplace = attribute('full_disk_encryption_inplace')
+  data_at_rest_encryption_required = input('data_at_rest_encryption_required')
+  full_disk_encryption_inplace = input('full_disk_encryption_inplace')
 
   query = %{
     SELECT     d.NAME AS [Database Name],
@@ -74,15 +74,15 @@ Implement physical security measures, operating system access control lists and 
     WHERE      d.NAME NOT IN ('master',
                               'model',
                               'msdb')
-    AND        d.NAME IN ('#{attribute('db_name')}')
+    AND        d.NAME IN ('#{input('db_name')}')
   }
 
-  sql_session = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              db_name: attribute('db_name'))
+  sql_session = mssql_session(user: input('user'),
+                              password: input('password'),
+                              host: input('host'),
+                              instance: input('instance'),
+                              port: input('port'),
+                              db_name: input('db_name'))
 
   unless data_at_rest_encryption_required
     impact 0.0
@@ -101,7 +101,7 @@ Implement physical security measures, operating system access control lists and 
     end
   end
 
-  describe "Database: #{attribute('db_name')} encryption state" do
+  describe "Database: #{input('db_name')} encryption state" do
     subject { sql_session.query(query).column('encryption state').uniq }
     it { should cmp 'Encrypted' }
   end

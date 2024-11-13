@@ -74,15 +74,15 @@ Caution:  this can break code.  This Fix should be implemented in conjunction wi
                 CTE.NAME
   }
 
-  sql_session = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              db_name: attribute('db_name'))
+  sql_session = mssql_session(user: input('user'),
+                              password: input('password'),
+                              host: input('host'),
+                              instance: input('instance'),
+                              port: input('port'),
+                              db_name: input('db_name'))
 
-  describe "Authorized users for Database: #{attribute('db_name')}" do
+  describe "Authorized users for Database: #{input('db_name')}" do
     subject { sql_session.query(query).column('objectowner').uniq }
-    it { should cmp attribute('authorized_principals') }
+    it { should cmp input('authorized_principals') }
   end
 end

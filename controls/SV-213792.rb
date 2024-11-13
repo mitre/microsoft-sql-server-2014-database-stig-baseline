@@ -106,15 +106,15 @@ GO'
     WHERE  audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
   )
 
-  server_trace_implemented = attribute('server_trace_implemented')
-  server_audit_implemented = attribute('server_audit_implemented')
+  server_trace_implemented = input('server_trace_implemented')
+  server_audit_implemented = input('server_audit_implemented')
 
-  sql_session = mssql_session(user: attribute('user'),
-                              password: attribute('password'),
-                              host: attribute('host'),
-                              instance: attribute('instance'),
-                              port: attribute('port'),
-                              db_name: attribute('db_name'))
+  sql_session = mssql_session(user: input('user'),
+                              password: input('password'),
+                              host: input('host'),
+                              instance: input('instance'),
+                              port: input('port'),
+                              db_name: input('db_name'))
 
   describe.one do
     describe 'SQL Server Trace is in use for audit purposes' do
