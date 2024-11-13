@@ -32,11 +32,11 @@ If such a job, or an alternative method of monitoring triggers for modification,
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
-  query = %{
+  query = %(
     SELECT enabled
     FROM   msdb.dbo.sysjobs
     WHERE  [name] = '%<job_name>s'
-  }
+  )
 
   job_name = attribute('track_triggers_changes_job_name')
 

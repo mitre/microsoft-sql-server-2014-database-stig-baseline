@@ -5,14 +5,14 @@ control 'SV-213783' do
 The principal protection against code injection is not to use dynamic execution except where it provides necessary functionality that cannot be utilized otherwise. Use strongly typed data items rather than general-purpose strings as input parameters to task-specific, pre-compiled stored procedures and functions (and triggers).
 
 When dynamic execution is necessary, ways to mitigate the risk include the following, which should be implemented both in the on-screen application and at the database level, in the stored procedures:
--- Allow strings as input only when necessary. 
+-- Allow strings as input only when necessary.
 -- Rely on data typing to validate numbers, dates, etc. Do not accept invalid values. If substituting other values for them, think carefully about whether this could be subverted.
 -- Limit the size of input strings to what is truly necessary.
 -- If single quotes/apostrophes, double quotes, semicolons, equals signs, angle brackets, or square brackets will never be valid as input, reject them.
--- If comment markers will never be valid as input, reject them. In SQL, these are -- or /* */ 
+-- If comment markers will never be valid as input, reject them. In SQL, these are -- or /* */
 -- If HTML and XML tags, entities, comments, etc., will never be valid, reject them.
 -- If wildcards are present, reject them unless truly necessary. In SQL these are the underscore and the percentage sign, and the word ESCAPE is also a clue that wildcards are in use.
--- If SQL key words, such as SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, DROP, ESCAPE, UNION, GRANT, REVOKE, DENY, MODIFY will never be valid, reject them. Use case-insensitive comparisons when searching for these. Bear in mind that some of these words, particularly Grant (as a person's name), could also be valid input. 
+-- If SQL key words, such as SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, DROP, ESCAPE, UNION, GRANT, REVOKE, DENY, MODIFY will never be valid, reject them. Use case-insensitive comparisons when searching for these. Bear in mind that some of these words, particularly Grant (as a person's name), could also be valid input.
 -- If there are range limits on the values that may be entered, enforce those limits.
 -- Institute procedures for inspection of programs for correct use of dynamic coding, by a party other than the developer.
 -- Conduct rigorous testing of program modules that use dynamic coding, searching for ways to subvert the intended use.

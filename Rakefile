@@ -8,7 +8,7 @@ require 'rubocop/rake_task'
 namespace :inspec do
   desc 'validate the inspec profile'
   task :check do
-    system 'bundle exec inspec check .'
+    system 'bundle exec cinc-auditor check .'
   end
 end
 

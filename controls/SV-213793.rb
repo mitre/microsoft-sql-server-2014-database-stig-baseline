@@ -1,6 +1,6 @@
 control 'SV-213793' do
   title 'SQL Server must generate Trace or Audit records when unsuccessful attempts to modify privileges/permissions via locally-defined security objects occur.'
-  desc "Failed attempts to change the permissions, privileges, and roles granted to users and roles must be tracked. Without an audit trail, unauthorized attempts to elevate or restrict privileges could go undetected. 
+  desc "Failed attempts to change the permissions, privileges, and roles granted to users and roles must be tracked. Without an audit trail, unauthorized attempts to elevate or restrict privileges could go undetected.
 
 In SQL Server, there is no distinction between modification of permissions and granting or dropping them.  However, native SQL Server security functionality may be supplemented with application-specific tables and logic, in which case the following actions on these tables and procedures/triggers/functions are also relevant:
 UPDATE
@@ -31,7 +31,7 @@ The following required event IDs should be among those listed; if not, this is a
 
 42  -- SP:Starting
 43  -- SP:Completed
-82-91  -- User-defined Event 
+82-91  -- User-defined Event
 162  -- User error message
 
 
@@ -43,11 +43,11 @@ The basic SQL Server Audit configuration provided in the supplemental file Audit
 
 Determine the name(s) of the server audit specification(s) in use.
 
-To look at audits and audit specifications, in Management Studio's object explorer, expand 
+To look at audits and audit specifications, in Management Studio's object explorer, expand
 <server name> >> Security >> Audits
 and
 <server name> >> Security >> Server Audit Specifications.
-Also, 
+Also,
 <server name> >> Databases >> <database name> >> Security >> Database Audit Specifications.
 
 Alternatively, review the contents of the system views with "audit" in their names.
@@ -64,9 +64,9 @@ If no row is returned, this is a finding.
 If the audited_result column is not "FAILURE" or "SUCCESS AND FAILURE", this is a finding.)
   desc 'fix', 'Where SQL Server Trace is in use, define  and enable a trace that captures all auditable events.  The script provided in the supplemental file Trace.sql can be used to do this.
 
-Add blocks of code to Trace.sql for each custom event class (integers in the range 82-91; the same event class may be used for all such triggers) used in these triggers.  
+Add blocks of code to Trace.sql for each custom event class (integers in the range 82-91; the same event class may be used for all such triggers) used in these triggers.
 
-Create triggers to raise a custom event on each locally-defined security table that requires tracking of Insert-Update-Delete operations.  The examples provided in the supplemental file CustomTraceEvents.sql can serve as the basis for these.  
+Create triggers to raise a custom event on each locally-defined security table that requires tracking of Insert-Update-Delete operations.  The examples provided in the supplemental file CustomTraceEvents.sql can serve as the basis for these.
 
 Execute Trace.sql.
 
@@ -95,20 +95,20 @@ GO'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']
 
-  query_traces = %{
+  query_traces = %(
     SELECT * FROM sys.traces
-  }
+  )
   query_trace_eventinfo = %{
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
   }
 
-  query_audits = %{
+  query_audits = %(
     SELECT server_specification_id,
            audit_action_name,
            audited_result
     FROM   sys.server_audit_specification_details
     WHERE  audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
-  }
+  )
 
   server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')
@@ -146,7 +146,7 @@ GO'
           subject { found_events }
           it { should include '42' }
           it { should include '43' }
-          its('to_s') { should match /"82"|"83"|"84"|"85"|"86"|"87"|"88"|"89"|"90"|"91"/ }
+          its('to_s') { should match(/"82"|"83"|"84"|"85"|"86"|"87"|"88"|"89"|"90"|"91"/) }
           it { should include '162' }
         end
       end
@@ -161,7 +161,7 @@ GO'
       end
       describe 'Audited Result for Defined Audit Actions' do
         subject { sql_session.query(query_audits).column('audited_result').uniq.to_s }
-        it { should match /SUCCESS AND FAILURE|FAILURE/ }
+        it { should match(/SUCCESS AND FAILURE|FAILURE/) }
       end
     end
   end

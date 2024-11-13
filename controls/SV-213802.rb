@@ -37,11 +37,11 @@ The basic SQL Server Audit configuration provided in the supplemental file Audit
 
 Determine the name(s) of the server audit specification(s) in use.
 
-To look at audits and audit specifications, in Management Studio's object explorer, expand 
+To look at audits and audit specifications, in Management Studio's object explorer, expand
 <server name> >> Security >> Audits
 and
 <server name> >> Security >> Server Audit Specifications.
-Also, 
+Also,
 <server name> >> Databases >> <database name> >> Security >> Database Audit Specifications.
 
 Alternatively, review the contents of the system views with "audit" in their names.
@@ -56,7 +56,7 @@ AND audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
 If no row is returned, this is a finding.
 
 If the audited_result column is not "SUCCESS" or "SUCCESS AND FAILURE", this is a finding.)
-  desc 'fix', 'Where SQL Server Trace is in use, create triggers to raise a custom event for DELETEs on each table holding categorized information.  The examples provided in the supplemental file CustomTraceEvents.sql can serve as the basis for these. 
+  desc 'fix', 'Where SQL Server Trace is in use, create triggers to raise a custom event for DELETEs on each table holding categorized information.  The examples provided in the supplemental file CustomTraceEvents.sql can serve as the basis for these.
 
 Add a block of code to the supplemental file Trace.sql for each custom event class (integers in the range 82-91; the same event class may be used for all such triggers) used in these triggers.  Execute Trace.sql.
 
@@ -93,20 +93,20 @@ GO'
     of information, such as classification or sensitivity level on the target'
   end
 
-  query_traces = %{
+  query_traces = %(
     SELECT * FROM sys.traces
-  }
+  )
   query_trace_eventinfo = %{
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
   }
 
-  query_audits = %{
+  query_audits = %(
     SELECT server_specification_id,
            audit_action_name,
            audited_result
     FROM   sys.server_audit_specification_details
     WHERE  audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
-  }
+  )
 
   server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')
@@ -142,7 +142,7 @@ GO'
         found_events = sql_session.query(format(query_trace_eventinfo, trace_id: trace_id)).column('eventid')
         describe "EventsIDs in Trace ID:#{trace_id}" do
           subject { found_events }
-          its('to_s') { should match /"82"|"83"|"84"|"85"|"86"|"87"|"88"|"89"|"90"|"91"/ }
+          its('to_s') { should match(/"82"|"83"|"84"|"85"|"86"|"87"|"88"|"89"|"90"|"91"/) }
           it { should include '162' }
         end
       end
@@ -157,7 +157,7 @@ GO'
       end
       describe 'Audited Result for Defined Audit Actions' do
         subject { sql_session.query(query_audits).column('audited_result').uniq.to_s }
-        it { should match /SUCCESS AND FAILURE|SUCCESS/ }
+        it { should match(/SUCCESS AND FAILURE|SUCCESS/) }
       end
     end
   end

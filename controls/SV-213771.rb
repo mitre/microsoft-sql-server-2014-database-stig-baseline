@@ -32,7 +32,7 @@ SELECT
       SUSER_SNAME(D.owner_sid) AS [Database Owner],
       F.RoleName AS [Fixed Server Role],
       CASE WHEN D.is_trustworthy_on = 1 THEN 'ON' ELSE 'off' END
-            AS [Trustworthy]      
+            AS [Trustworthy]
 FROM
       FixedServerRoles F
       INNER JOIN sys.databases D ON D.Name = DB_NAME()

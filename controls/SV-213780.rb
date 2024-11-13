@@ -25,7 +25,7 @@ EXEC SP_CONTROL_DBMASTERKEY_PASSWORD @db_name = '<database name>', @action
   tag cci: ['CCI-001199']
   tag nist: ['SC-28']
 
-  query= %{
+  query = %{
     SELECT
           COUNT(credential_id) AS count_of_ids
     FROM

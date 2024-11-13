@@ -15,7 +15,7 @@ EXEC msdb.dbo.sp_help_job @job_name = '<enter . . . job name>';
 (Alternatively, in SQL Server Management Studio, navigate to SQL Server Agent and examine the job from there.)
 
 If a timed job or some other method is not implemented to check for Functions being modified, this is a finding."
-  desc 'fix', 'Configure a SQL Server timed job that automatically checks all system and user-defined Functions for being modified. 
+  desc 'fix', 'Configure a SQL Server timed job that automatically checks all system and user-defined Functions for being modified.
 
 (The supplemental file Track.sql, provided with this STIG, can be used to establish a monitoring job.  This should be supplemented with a process for informing the appropriate personnel.  Other techniques for achieving the same ends, such as the use of DDL triggers, are acceptable.)'
   impact 0.5
@@ -32,11 +32,11 @@ If a timed job or some other method is not implemented to check for Functions be
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
-  query = %{
+  query = %(
     SELECT enabled
     FROM   msdb.dbo.sysjobs
     WHERE  [name] = '%<job_name>s'
-  }
+  )
 
   job_name = attribute('track_functions_changes_job_name')
 

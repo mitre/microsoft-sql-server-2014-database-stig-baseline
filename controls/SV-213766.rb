@@ -32,7 +32,7 @@ To see what users and database roles inherit these permissions from the database
     SELECT * FROM STIG.members_of_database_role(<database role name>);
 
 To see all the permissions in effect for a database principal (server role or login):
-    SELECT * FROM STIG.server_effective_permissions(<principal name>); 
+    SELECT * FROM STIG.server_effective_permissions(<principal name>);
 
 If designated personnel are not able to configure auditable events, this is a finding.
 

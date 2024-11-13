@@ -33,14 +33,14 @@ If the additional requirements are not in place, this is a finding.'
   tag cci: ['CCI-001199']
   tag nist: ['SC-28']
 
-  query = %{
+  query = %(
     SELECT NAME
     FROM   [master].sys.databases
     WHERE  is_master_key_encrypted_by_server = 1
            AND owner_sid <> 1
            AND state = 0
            AND name = '#{attribute('db_name')}';
-  }
+  )
 
   sql_session = mssql_session(user: attribute('user'),
                               password: attribute('password'),

@@ -7,7 +7,7 @@ Systems at unsupported servicing levels or releases will not receive security up
 When maintenance updates and patches are no longer available, the database software is no longer considered supported and should be upgraded or decommissioned.'
   desc 'check', 'Review the version and release information.
 
-Verify the SQL Server version via one of the following methods: 
+Verify the SQL Server version via one of the following methods:
 Connect to the server by using Object Explorer in SQL Server Management Studio. After Object Explorer is connected, it will show the version information in parentheses, together with the user name that is used to connect to the specific instance of SQL Server.
 
 Or, from SQL Server Management Studio:

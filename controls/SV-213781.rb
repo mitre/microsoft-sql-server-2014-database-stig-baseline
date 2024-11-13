@@ -65,7 +65,7 @@ The symmetric key must specify a certificate or asymmetric key for encryption.'
                               port: attribute('port'),
                               db_name: attribute('db_name'))
 
-  if !sql_session.query(query).column('name').empty?
+  unless sql_session.query(query).column('name').empty?
     describe "List of Symmetric keys in DB: #{attribute('db_name')} not encrypted\
     by DoD certificate" do
       subject { sql_session.query(query).column('name') }

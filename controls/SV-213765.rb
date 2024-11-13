@@ -85,11 +85,11 @@ If an alternative technique is in use and demonstrated effective, this is not a 
 
 Determine the name(s) of the server audit specification(s) in use.
 
-To look at audits and audit specifications, in Management Studio's object explorer, expand 
+To look at audits and audit specifications, in Management Studio's object explorer, expand
 <server name> >> Security >> Audits
 and
 <server name> >> Security >> Server Audit Specifications.
-Also, 
+Also,
 <server name> >> Databases >> <database name> >> Security >> Database Audit Specifications.
 
 Alternatively, review the contents of the system views with "audit" in their names.
@@ -158,14 +158,14 @@ The script provided in the supplemental file Audit.sql can be used to create an 
   tag cci: ['CCI-000169']
   tag nist: ['AU-12 a']
 
-  REQUIRED_EVENT_ID = %w{
+  REQUIRED_EVENT_ID = %w[
     14 15 16 17 18 20 42 43 46 47 90 102 103 104 105 106 107
     108 109 110 111 112 113 115 116 117 118 128 129 130 131 132
     133 134 135 152 153 162 164 170 171 172 173 175 176 177 178
     180
-  }.freeze
+  ].freeze
 
-  REQUIRED_AUDITS_ACTIONS = %w{
+  REQUIRED_AUDITS_ACTIONS = %w[
     APPLICATION_ROLE_CHANGE_PASSWORD_GROUP
     AUDIT_CHANGE_GROUP
     BACKUP_RESTORE_GROUP
@@ -198,21 +198,21 @@ The script provided in the supplemental file Audit.sql can be used to create an 
     SERVER_STATE_CHANGE_GROUP
     SUCCESSFUL_LOGIN_GROUP
     TRACE_CHANGE_GROUP
-  }.freeze
+  ].freeze
 
-  query_traces = %{
+  query_traces = %(
     SELECT * FROM sys.traces
-  }
+  )
   query_trace_eventinfo = %{
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
   }
 
-  query_audits = %{
+  query_audits = %(
     SELECT server_specification_id,
            audit_action_name,
            audited_result
     FROM   sys.server_audit_specification_details
-  }
+  )
 
   server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')

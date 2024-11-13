@@ -1,6 +1,6 @@
 control 'SV-213805' do
   title 'SQL Server must generate Trace or Audit records when unsuccessful accesses to designated objects occur.'
-  desc 'Without tracking all or selected types of access to all or selected objects (tables, views, procedures, functions, etc.), it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one. 
+  desc 'Without tracking all or selected types of access to all or selected objects (tables, views, procedures, functions, etc.), it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
 
 Types of access include, but are not necessarily limited to:
 SELECT
@@ -36,11 +36,11 @@ The basic SQL Server Audit configuration provided in the supplemental file Audit
 
 Determine the name(s) of the server audit specification(s) in use.
 
-To look at audits and audit specifications, in Management Studio's object explorer, expand 
+To look at audits and audit specifications, in Management Studio's object explorer, expand
 <server name> >> Security >> Audits
 and
 <server name> >> Security >> Server Audit Specifications.
-Also, 
+Also,
 <server name> >> Databases >> <database name> >> Security >> Database Audit Specifications.
 
 Alternatively, review the contents of the system views with "audit" in their names.
@@ -83,20 +83,20 @@ GO'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']
 
-  query_traces = %{
+  query_traces = %(
     SELECT * FROM sys.traces
-  }
+  )
   query_trace_eventinfo = %{
     SELECT DISTINCT(eventid) FROM sys.fn_trace_geteventinfo(%<trace_id>s);
   }
 
-  query_audits = %{
+  query_audits = %(
     SELECT server_specification_id,
            audit_action_name,
            audited_result
     FROM   sys.server_audit_specification_details
     WHERE  audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP';
-  }
+  )
 
   server_trace_implemented = attribute('server_trace_implemented')
   server_audit_implemented = attribute('server_audit_implemented')
@@ -146,7 +146,7 @@ GO'
       end
       describe 'Audited Result for Defined Audit Actions' do
         subject { sql_session.query(query_audits).column('audited_result').uniq.to_s }
-        it { should match /SUCCESS AND FAILURE|FAILURE/ }
+        it { should match(/SUCCESS AND FAILURE|FAILURE/) }
       end
     end
   end
